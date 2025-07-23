@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -32,7 +32,6 @@
     </nav>
 
 
-    <!-- home section -->
     <section class="home" id="home">
         <div class="max-width">
             <div class="home-content">
@@ -55,18 +54,15 @@
 
 
 
-    <!-- about section -->
     <section class="about" id="about">
         <div class="max-width">
             <h2 class="title">Me and My Tech Stack</h2>
             <div class="about-content">
-                <!-- Left Column (Image & Resume) -->
                 <div class="column left">
                     <img src="Images/Untitled design.png" alt="Profile Picture">
                     <a href="./Images/VANSH.pdf" onclick="myresume();">GET MY RESUME</a> 
                 </div>
     
-                <!-- Right Column (Text & Skills) -->
                 <div class="column right">
                     <div class="text">
                         I'm Vansh Kumar Garg and I'm <span class="typing2">Software Developer.</span>
@@ -79,7 +75,6 @@
 
                     <p>Here are some of the programming languages and technologies I'm learning and trying to become an expert at!</p>
          
-                    <!-- Skills Icons -->
                     <div class="skills-content">
                         <div class="skills-bg"><span class="detail" data-hover="HTML"><img class="skills1" src="./Images/html.png"></span></div>
                         <div class="skills-bg"><span class="detail" data-hover="CSS"><img class="skills1" src="./Images/css-3.png"></span></div>
@@ -89,7 +84,6 @@
                         <div class="skills-bg"><span class="detail" data-hover="Python"><img class="skills1" src="./Images/python.png"></span></div>
                         <div class=skills-bg> <span class="detail" data-hover=" REACTJS"><img class="skills1" src="./Images/react.png"></span></div>
                         <div class=skills-bg> <span class="detail" data-hover="SQL"><img class="skills1" src="./Images/sql-file-format-symbol.png"></span></div>
-                        <!-- <div class=skills-bg> <span class="detail" data-hover="NODEJS"><img class="skills1" src="./Images/node.png"></span></div> -->
                     </div>
                     </div>
                 </div>
@@ -100,7 +94,6 @@
 
 
 
-    <!-- My works section start -->
     <section class="services" id="services">
         <div class="max-width">
             <h2 class="title">Projects</h2>
@@ -108,7 +101,6 @@
                 <p>Dive into my work! Explore my projects with a click!</p>
             </div>
             <div class="serv-content">
-                <!-- Project Category Cards -->
 
                 <div class="card category-card">
                     <div class="box">
@@ -158,7 +150,6 @@
         </div>
     </section>
 
-    <!-- Education section starts -->
     <section class="education" id="education">
 
         <h1 class="title"> My <span>Education</span> </h1>
@@ -189,7 +180,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="max-width">
             <h2 class="title">Contact me</h2>
@@ -258,21 +248,321 @@
         </div>
     </section>
 
-    <!-- footer section -->
 
     <footer>
         <span>Created By Vansh Kumar Garg</span>
     </footer>
 
-    <!-- for mail -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
 
     </script>
     <script src="index.js"></script>
-    <!-- SCRIPT FOR ICONS -->
+
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vansh Garg | Portfolio</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Montserrat:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+
+    <nav>
+        <div class="logo">Vansh</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#toolbox">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem;">👨‍💻</div>
+        <div class="availability-badge">
+            <span class="dot"></span>
+            <span>Available for New Projects</span>
+        </div>
+        <h1>Hello, I am <br> Vansh Kumar Garg</h1>
+        <h2 class="typing"></h2>
+
+        <p class="bio">
+            I specialize in transforming designs into fully functional, high-performance <span class="highlight">web
+                apps</span>.
+            Passionate about bringing ideas to life with <span class="highlight">clean code</span> <br /> intuitive user
+            interfaces.
+            Backed by <span class="highlight">400+ LeetCode challenges</span> and deep backend expertise, I build fast,
+            scalable, and secure digital products.<br>
+            Whether it's crafting <span class="highlight">intuitive UIs</span> or architecting robust <span
+                class="highlight">REST APIs</span>, I bring<br /> ideas to life with precision and performance.
+        </p>
+
+        <div class="buttons">
+            <a href="#projects" class="btn white">Explore my Work</a>
+            <a href="#contact" class="btn gradient">👋 Let's Connect</a>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <h1 class="section-subtitle">PROJECTS</h1>
+        <h1 class="section-title">What I've Built</h1>
+
+        <div class="project-wrapper">
+            <!-- Row 1 -->
+            <div class="project-row row-1">
+                <!-- Project 1 -->
+                <div class="card-wrapper">
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front">
+                                <img src="./Images/movietix.png" alt="MovieTix Screenshot">
+                                <div class="flip-front-content">
+                                    <h3>MovieTix</h3>
+                                    <p class="project-tags">React · Node.js · Express <br />· MongoDB · Stripe · Clerk
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flip-back">
+                                <h3>MovieTix</h3>
+                                <!-- <p class="project-tags">React · Node.js · MongoDB · Stripe</p> -->
+                                <p class="project-desc">A full-stack movie ticket booking platform with real-time seat
+                                    selection, secure Stripe payments, and responsive UI.
+                                    Features include user authentication (Clerk), automated booking confirmations via
+                                    webhooks, and admin dashboard control.</p>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/VKGarg7/MovieTix" class="btn" target="_blank"> <i
+                                            class="fab fa-github"></i>GitHub</a>
+                                    <a href="https://movietix-rho.vercel.app/" class="btn btn-secondary"
+                                        target="_blank"><i class="fas fa-external-link-alt"></i>Live</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="card-wrapper">
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front">
+                                <img src="./Images/food-delivery.webp" alt="Food_Delivery_Website Screenshot">
+                                <div class="flip-front-content">
+                                    <h3>Food Delivery</h3>
+                                    <p class="project-tags">React · Redux Toolkit · Node.js · Express · MongoDB · Stripe
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flip-back">
+                                <h3>Food Delivery Website</h3>
+                                <p class="project-desc">A full-stack food delivery app with real-time menu updates,
+                                    secure checkout, user roles for customers/restaurants/delivery agents, and Stripe
+                                    payment integration..</p>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/VKGarg7/Food_Delivery_Website" class="btn"
+                                        target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                                    <a class="btn btn-secondary" target="_blank"><i
+                                            class="fas fa-external-link-alt"></i>Live</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Row 2 -->
+            <div class="project-row row-2">
+
+                <!-- Project 3 -->
+                <div class="card-wrapper">
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front">
+                                <img src="./Images/ecom.png" alt="E-Commerce Screenshot">
+                                <div class="flip-front-content">
+                                    <h3>E-Commerce</h3>
+                                    <p class="project-tags">HTML · CSS · JavaScript · React · Tailwind</p>
+                                </div>
+                            </div>
+                            <div class="flip-back">
+                                <h3>E-Commerce Website</h3>
+                                <p class="project-desc">A responsive e-commerce front-end featuring product listings,
+                                    category views, and promotional displays. Designed for mobile-first experiences with
+                                    admin controls for real-time product updates.</p>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/VKGarg7/E-commerce-website" class="btn"
+                                        target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                                    <a href="https://vkgarg7.github.io/E-commerce-website/" class="btn btn-secondary"
+                                        target="_blank"><i class="fas fa-external-link-alt"></i>Live</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="card-wrapper">
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front">
+                                <img src="./Images/amazon.png" alt="Amazon Clone Screenshot">
+                                <div class="flip-front-content">
+                                    <h3>Amazon Clone</h3>
+                                    <p class="project-tags">HTML · CSS </p>
+                                </div>
+                            </div>
+                            <div class="flip-back">
+                                <h3>Amazon Clone</h3>
+                                <p class="project-desc">A responsive front-end clone of Amazon featuring a clean product
+                                    layout, navbar, and hover interactions. Designed for UI replication using semantic
+                                    HTML and modern CSS techniques.</p>
+                                <div class="card-buttons">
+                                    <a href="#" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                                    <!-- <a href="#" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </section>
+
+    <!-- About -->
+    <section class="about-section" id="toolbox">
+        <h2 class="section-title">About Me</h2>
+        <h1 class="section-title">Passionate Full Stack Developer</h1>
+        <p class="section-desc">
+            I'm a passionate MERN Stack Developer who enjoys architecting seamless digital experiences from frontend
+            interfaces to robust backend systems.
+            I’ve built multiple end-to-end applications involving real-time features, secure payments, and role-based
+            dashboards.
+            Currently pursuing Computer Science and Business Systems at Thapar Institute, with a strong focus on
+            practical learning through projects and coding challenges.
+        </p>
+        <h3 class="tools-title">My Toolbox</h3>
+        <div class="toolbox-box">
+            <div class="toolbox-wrapper">
+                <div class="toolbox-row">
+                    <div class="tool-card"><i class="fab fa-react"></i><span>React</span></div>
+                    <div class="tool-card"><i class="fab fa-node-js"></i><span>Node.js</span></div>
+                    <div class="tool-card"><i class="fas fa-database"></i><span>MongoDB</span></div>
+                    <div class="tool-card"><i class="fab fa-js-square"></i><span>JavaScript</span></div>
+                    <div class="tool-card"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                    <div class="tool-card"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                    <div class="tool-card"><i class="fas fa-code"></i><span>Express.js</span></div>
+                    <div class="tool-card"><i class="fas fa-lock"></i><span>JWT</span></div>
+                    <div class="tool-card"><i class="fas fa-user-shield"></i><span>Clerk</span></div>
+                    <div class="tool-card"><i class="fab fa-stripe-s"></i><span>Stripe API</span></div>
+                    <div class="tool-card"><i class="fas fa-random"></i><span>RESTful APIs</span></div>
+                    <div class="tool-card"><i class="fas fa-project-diagram"></i><span>Mongoose</span></div>
+                    <div class="tool-card"><i class="fab fa-github"></i><span>GitHub</span></div>
+                    <div class="tool-card"><i class="fas fa-terminal"></i><span>Postman</span></div>
+                    <div class="tool-card"><i class="fab fa-figma"></i><span>Figma</span></div>
+                    <div class="tool-card"><i class="fas fa-server"></i><span>Vercel</span></div>
+                    <div class="tool-card"><i class="fas fa-code-branch"></i><span>Git</span></div>
+                    <div class="tool-card"><i class="fas fa-vial"></i><span>VS Code</span></div>
+                    <div class="tool-card"><i class="fas fa-wind"></i><span>Tailwind CSS</span></div>
+                    <div class="tool-card"><i class="fas fa-exchange-alt"></i><span>Redux Toolkit</span></div>
+                    <div class="tool-card"><i class="fas fa-icons"></i><span>Lucide Icons</span></div>
+                    <div class="tool-card"><i class="fas fa-plug"></i><span>Stripe Webhooks</span></div>
+                </div>
+                <div class="toolbox-row duplicate">
+                    <div class="tool-card"><i class="fab fa-react"></i><span>React</span></div>
+                    <div class="tool-card"><i class="fab fa-node-js"></i><span>Node.js</span></div>
+                    <div class="tool-card"><i class="fas fa-database"></i><span>MongoDB</span></div>
+                    <div class="tool-card"><i class="fab fa-js-square"></i><span>JavaScript</span></div>
+                    <div class="tool-card"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                    <div class="tool-card"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                    <div class="tool-card"><i class="fas fa-code"></i><span>Express.js</span></div>
+                    <div class="tool-card"><i class="fas fa-lock"></i><span>JWT</span></div>
+                    <div class="tool-card"><i class="fas fa-user-shield"></i><span>Clerk</span></div>
+                    <div class="tool-card"><i class="fab fa-stripe-s"></i><span>Stripe API</span></div>
+                    <div class="tool-card"><i class="fas fa-random"></i><span>RESTful APIs</span></div>
+                    <div class="tool-card"><i class="fas fa-project-diagram"></i><span>Mongoose</span></div>
+                    <div class="tool-card"><i class="fab fa-github"></i><span>GitHub</span></div>
+                    <div class="tool-card"><i class="fas fa-terminal"></i><span>Postman</span></div>
+                    <div class="tool-card"><i class="fab fa-figma"></i><span>Figma</span></div>
+                    <div class="tool-card"><i class="fas fa-server"></i><span>Vercel</span></div>
+                    <div class="tool-card"><i class="fas fa-code-branch"></i><span>Git</span></div>
+                    <div class="tool-card"><i class="fas fa-vial"></i><span>VS Code</span></div>
+                    <div class="tool-card"><i class="fas fa-wind"></i><span>Tailwind CSS</span></div>
+                    <div class="tool-card"><i class="fas fa-exchange-alt"></i><span>Redux Toolkit</span></div>
+                    <div class="tool-card"><i class="fas fa-icons"></i><span>Lucide Icons</span></div>
+                    <div class="tool-card"><i class="fas fa-plug"></i><span>Stripe Webhooks</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+        <div class="contact-header">
+            <div style="flex:1; min-width: 250px;">
+                <h2 class="contact-h2">Let's create something amazing
+                    together</h2>
+                <p class="contact-p">Ready to bring your next project to life? Let's connect and
+                    discuss how I can help you achieve your goals.</p>
+            </div>
+            <div class="contact-div">
+                <a href="./Images/VANSH_Resume_SDE.pdf" target="_blank" class="contact-a">
+                    My Resume &nbsp;<i class="fas fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+
+        </div>
+        <hr class="divider" />
+
+
+        <div class="contact-socials">
+            <a href="mailto:14garg04@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+            <a href="https://github.com/VKGarg7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://linkedin.com/in/vansh-garg-bb5060202/" target="_blank"><i class="fab fa-linkedin"></i>
+                LinkedIn</a>
+            <a href="https://leetcode.com/VKGarg/" target="_blank"><i class="fas fa-code"></i> LeetCode</a>
+        </div>
+        <div class="tech-signature">
+            <span>Made with 💙 using React, Tailwind, and ❤️ for code.</span>
+        </div>
+        <p class="contact-quote">“Clean code. Great UX. Real results.”</p>
+
+        <p class="type-text">Open to Freelance · Remote · Internships · Full-Time</p>
+        <a href="#home" class="scroll-up"><i class="fas fa-arrow-up"></i></a>
+
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="social-footer">
+        <p>© 2025 Vansh Garg | All rights reserved.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="index.js"></script>
+</body>
+
 </html>
