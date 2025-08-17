@@ -310,6 +310,7 @@ section.visible {
     gap: 2rem;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
 }
 
 .card-wrapper {
@@ -318,6 +319,7 @@ section.visible {
     border-radius: 24px;
     box-shadow: 0 15px 30px rgba(0, 255, 247, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-width: 400px;
 }
 
 .card-wrapper:hover {
@@ -327,8 +329,8 @@ section.visible {
 
 .flip-card {
     background-color: transparent;
-    width: 280px;
-    height: 340px;
+    width: 100%;
+    height: 400px;
     perspective: 1000px;
 }
 
