@@ -104,12 +104,15 @@ section.visible {
   box-shadow: 0 0 35px rgba(0, 255, 247, 0.2);
 }
 
-/* Optional highlight inside bio */
 .bio span.highlight {
   color: #00fff7;
   font-weight: 600;
 }
 
+.bio span.highlight, .section-desc span.highlight {
+    color: #00fff7; 
+    font-weight: 600; 
+}
 
 .buttons { margin-top: 2rem; }
 
@@ -141,7 +144,6 @@ section.visible {
     color: #111;
 }
 
-/* About Section */
 .about-section {
     padding: 4rem 2rem; 
     text-align: center; 
@@ -149,6 +151,8 @@ section.visible {
     color: #fff; 
     position: relative; 
     overflow: hidden; 
+    background: linear-gradient(45deg, #00fff7, #00c9b7);
+    -webkit-background-clip: text;
 }
 
 .about-section::before {
@@ -158,17 +162,17 @@ section.visible {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 20%, transparent 20%) 0 0; /* Dotted effect */
-    background-size: 20px 20px; /* Size of the dots */
-    opacity: 0.1; /* Adjust opacity for subtlety */
-    z-index: 0; /* Place behind the content */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 20%, transparent 20%) 0 0; 
+    background-size: 20px 20px; 
+    opacity: 0.1; 
+    z-index: 0;
 }
 
 .about-section h2,
 .about-section h1,
 .about-section p {
-    position: relative; /* Ensure text is above the dots */
-    z-index: 1; /* Bring text above the dots */
+    position: relative;
+    z-index: 1; 
 }
 
 
@@ -238,63 +242,62 @@ section.visible {
 .toolbox-box {
     width: 90%;
     max-width: 800px;
-    padding: 20px; /* Add padding for spacing */
+    padding: 20px;
     margin: auto;
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    background-color: rgba(255, 255, 255, 0.1); /* Slightly more transparent */
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* WRAPPER FOR SLIDING */
 .toolbox-wrapper {
     display: flex;
-    width: fit-content;
-    animation: scroll 15s linear infinite;
+    width: max-content;
+    animation: scroll 15s linear infinite; 
+    gap: 0; 
 }
 
-/* INDIVIDUAL ROW */
 .toolbox-row {
     display: flex;
-    gap: 20px;
+    gap: 0;
 }
 
-.toolbox-row.duplicate{
-    margin-left: 40px;
-}
-
-/* TOOL CARDS */
 .tool-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.08);
-    padding: 15px; /* Increase padding for better spacing */
+    padding: 20px; 
     border-radius: 14px;
     color: #fff;
-    min-width: 100px;
+    width: 120px; 
+    height: 120px;
     font-weight: 500;
-    transition: transform 0.3s, box-shadow 0.3s; /* Add transition for shadow */
+    transition: transform 0.3s, box-shadow 0.3s; 
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    margin: 0 10px; 
 }
 
 .tool-card i {
-    font-size: 2rem;
-    margin-bottom: 6px;
+    font-size: 2.5rem; 
+    margin-bottom: 10px; 
+}
+
+.tool-card span {
+    font-size: 1rem; 
 }
 
 .tool-card:hover {
-    transform: scale(1.1); /* Slightly increase size on hover */
-    box-shadow: 0 8px 20px rgba(0, 255, 247, 0.4); /* Enhance shadow on hover */
+    transform: scale(1.1); 
+    box-shadow: 0 8px 20px rgba(0, 255, 247, 0.4); 
 }
 
-/* ANIMATION */
 @keyframes scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    100% { transform: translateX(calc(-50%)); } 
 }
 
 .project-wrapper {
@@ -371,7 +374,6 @@ section.visible {
 }
 
 .flip-back {
-    /* background-color: linear-gradient(135deg, #f0f4f8, #d9e2ec); */
     background-color: #1e293b;
     color: white;
     transform: rotateY(180deg);
@@ -434,7 +436,6 @@ section.visible {
     color: #00e0c0;
 }
 
-/* Responsive */
 @media screen and (max-width: 900px) {
     .project-row {
         flex-direction: column;
@@ -597,5 +598,85 @@ footer a {
 
 .scroll-up:hover {
   transform: scale(1.1);
+}
+
+.timeline {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 2rem;
+    border-left: none;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -6px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background-color: #00fff7;
+    border-radius: 50%;
+}
+
+.timeline-content {
+    margin-left: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 4px solid #00fff7;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0, 255, 247, 0.08);
+    color: #e0e0e0;
+    max-width: 800px;
+    margin: 1.5rem auto;
+    text-align: left;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.timeline-content:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 35px rgba(0, 255, 247, 0.2);
+}
+
+.experience-section {
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease, transform 1s ease;
+    background: linear-gradient(45deg, #00fff7, #00c9b7);
+    -webkit-background-clip: text;
+}
+
+.experience-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.experience-company {
+    font-weight: bold;
+    color: rgba(0,255,247,0.3);
+}
+
+.experience-duration {
+    font-style: italic;
+    color: #777;
+}
+
+.experience-responsibilities {
+    margin: 0;
+    padding-left: 1.5rem;
+    list-style: disc;
 }
 

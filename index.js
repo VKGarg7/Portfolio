@@ -1,5 +1,5 @@
 // Typing Animation
-const text = ["Full Stack Developer", "MERN Stack Engineer", "Creative Coder"];
+const text = ["Full Stack Developer", "MERN Stack Engineer", "Creative Coder" , "Backend Engineer"];
 let index = 0, charIndex = 0, currentText = "";
 function type() {
     if (charIndex < text[index].length) {
