@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce — Project Inspection | Vansh Garg</title>
+    <meta name="description" content="Inspection report for a responsive e-commerce front-end built with React, JavaScript, and Tailwind CSS." />
+    <meta name="theme-color" content="#05070a" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="project-detail.css" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+    <div class="grain-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <div class="detail-progress-track">
+        <div class="detail-progress-fill" id="detailProgressFill"></div>
+    </div>
+
+    <nav>
+        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
+        <div class="dash-links">
+            <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span></a>
+            <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span></a>
+            <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span></a>
+            <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span></a>
+            <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span></a>
+            <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span></a>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" class="mobile-link">Ignition <small>Home</small></a>
+        <a href="index.html#about" class="mobile-link">Driver Profile <small>About</small></a>
+        <a href="index.html#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
+        <a href="index.html#experience" class="mobile-link">Odometer <small>Experience</small></a>
+        <a href="index.html#projects" class="mobile-link">The Garage <small>Projects</small></a>
+        <a href="index.html#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+    </div>
+
+    <main class="detail-main">
+
+        <header class="detail-hero">
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+            <div class="detail-index">PROJECT 03 · INSPECTION REPORT</div>
+            <h1 class="detail-title">E-Commerce</h1>
+            <p class="detail-subtitle">A responsive e-commerce front-end featuring product listings, category views, and promotional displays.</p>
+            <div class="detail-quickfacts">
+                <div class="qf"><span class="qf-label">CLASS</span><span class="qf-value">Frontend Storefront</span></div>
+                <div class="qf"><span class="qf-label">ENGINE</span><span class="qf-value">React / JavaScript</span></div>
+                <div class="qf"><span class="qf-label">SYSTEMS</span><span class="qf-value">HTML / CSS / Tailwind</span></div>
+                <div class="qf"><span class="qf-label">STATUS</span><span class="qf-value status-deployed">DEPLOYED</span></div>
+            </div>
+            <div class="detail-links">
+                <a href="https://github.com/VKGarg7/E-commerce-website" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                <a href="https://vkgarg7.github.io/E-commerce-website/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+            </div>
+            <img src="./Images/ecom.png" alt="E-Commerce application screenshot" class="detail-hero-img" loading="lazy">
+        </header>
+
+        <section class="detail-section" id="overview">
+            <div class="detail-section-head"><span class="detail-num">01</span><h2>Overview</h2></div>
+            <p>This is a responsive e-commerce front-end: product listings, category browsing, and promotional banners, built as a client-side application without a connected backend or payment processor. It's scoped deliberately as a UI/UX and layout exercise rather than a full transactional store.</p>
+        </section>
+
+        <section class="detail-section" id="challenge">
+            <div class="detail-section-head"><span class="detail-num">02</span><h2>The Challenge</h2></div>
+            <p>The main constraint was layout, not logic: making a product grid that looks intentional at four different breakpoints (desktop, tablet, small tablet, phone) rather than just shrinking uniformly. E-commerce grids are especially prone to "it works on desktop but breaks at 768px" bugs when column counts, image aspect ratios, and text truncation aren't planned together.</p>
+        </section>
+
+        <section class="detail-section" id="engineering">
+            <div class="detail-section-head"><span class="detail-num">03</span><h2>The Engineering</h2></div>
+            <p>Built mobile-first: base styles target the smallest viewport, then Tailwind's responsive utility classes layer on additional columns and spacing as the viewport grows, rather than starting from a desktop layout and trying to compress it down. Product cards are componentized in React so category views, promotional sections, and listing pages all reuse the same card rendering logic instead of duplicating markup per page.</p>
+        </section>
+
+        <section class="detail-section" id="techstack">
+            <div class="detail-section-head"><span class="detail-num">04</span><h2>Tech Stack</h2></div>
+            <div class="stack-grid">
+                <div class="stack-chip"><i class="fab fa-react"></i>React</div>
+                <div class="stack-chip"><i class="fab fa-js-square"></i>JavaScript</div>
+                <div class="stack-chip"><i class="fas fa-wind"></i>Tailwind CSS</div>
+                <div class="stack-chip"><i class="fab fa-html5"></i>HTML5</div>
+                <div class="stack-chip"><i class="fab fa-css3-alt"></i>CSS3</div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="features">
+            <div class="detail-section-head"><span class="detail-num">05</span><h2>Key Features</h2></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-th-large"></i><div><strong>Responsive product grid</strong><p>Reflows cleanly across desktop, tablet, and mobile breakpoints.</p></div></li>
+                <li><i class="fas fa-tags"></i><div><strong>Category views</strong><p>Product listings filterable by category.</p></div></li>
+                <li><i class="fas fa-bullhorn"></i><div><strong>Promotional displays</strong><p>Dedicated banner components for sales and featured items.</p></div></li>
+                <li><i class="fas fa-user-shield"></i><div><strong>Admin-style controls</strong><p>Front-end controls for updating displayed product data in real time.</p></div></li>
+            </ul>
+        </section>
+
+        <section class="detail-section" id="performance">
+            <div class="detail-section-head"><span class="detail-num">06</span><h2>Performance</h2></div>
+            <p>No formal performance benchmarking (Lighthouse scores, load-time metrics) has been run on this project. As a static, backend-free front-end, its performance profile is inherently simple — there's no server round-trip or database query to optimize, so the main performance lever was keeping the component tree and image sizes reasonable rather than deep optimization work.</p>
+        </section>
+
+        <section class="detail-section" id="results">
+            <div class="detail-section-head"><span class="detail-num">07</span><h2>Results</h2></div>
+            <p>The storefront is deployed and live (linked above) as a working responsive UI. It demonstrates component-based frontend architecture and mobile-first responsive design rather than a full transactional e-commerce backend — an intentional, honest scope for what this project was built to prove.</p>
+        </section>
+
+        <section class="detail-section" id="lessons">
+            <div class="detail-section-head"><span class="detail-num">08</span><h2>Lessons</h2></div>
+            <p>Building the grid mobile-first instead of retrofitting a desktop layout downward made responsive behavior far more predictable — starting from constraints rather than starting from abundant space and cutting things away. It also reinforced how much of "e-commerce UX" is really just information hierarchy: what a shopper sees first, second, and third on a product card matters more than how many features are crammed onto the page.</p>
+        </section>
+
+        <div class="detail-footer-nav">
+            <a href="index.html#projects" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+        </div>
+    </main>
+
+    <footer class="social-footer">
+        <p>© 2025 Vansh Garg | All rights reserved.</p>
+    </footer>
+
+    <script src="project.js"></script>
+</body>
+
+</html>
