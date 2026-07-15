@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MovieTix — Project Inspection | Vansh Garg</title>
+    <meta name="description" content="Inspection report for MovieTix — a full-stack movie ticket booking platform built with React, Node.js, Express, MongoDB, and Stripe." />
+    <meta name="theme-color" content="#05070a" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="project-detail.css" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+    <div class="grain-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <div class="detail-progress-track">
+        <div class="detail-progress-fill" id="detailProgressFill"></div>
+    </div>
+
+    <nav>
+        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
+        <div class="dash-links">
+            <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span></a>
+            <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span></a>
+            <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span></a>
+            <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span></a>
+            <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span></a>
+            <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span></a>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" class="mobile-link">Ignition <small>Home</small></a>
+        <a href="index.html#about" class="mobile-link">Driver Profile <small>About</small></a>
+        <a href="index.html#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
+        <a href="index.html#experience" class="mobile-link">Odometer <small>Experience</small></a>
+        <a href="index.html#projects" class="mobile-link">The Garage <small>Projects</small></a>
+        <a href="index.html#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+    </div>
+
+    <main class="detail-main">
+
+        <!-- ===== Inspection header ===== -->
+        <header class="detail-hero">
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+            <div class="detail-index">PROJECT 01 · INSPECTION REPORT</div>
+            <h1 class="detail-title">MovieTix</h1>
+            <p class="detail-subtitle">A full-stack movie ticket booking platform with real-time seat selection and secure payments.</p>
+            <div class="detail-quickfacts">
+                <div class="qf"><span class="qf-label">CLASS</span><span class="qf-value">Web Application</span></div>
+                <div class="qf"><span class="qf-label">ENGINE</span><span class="qf-value">React / Node.js / Express</span></div>
+                <div class="qf"><span class="qf-label">SYSTEMS</span><span class="qf-value">MongoDB / Stripe / Clerk</span></div>
+                <div class="qf"><span class="qf-label">STATUS</span><span class="qf-value status-deployed">DEPLOYED</span></div>
+            </div>
+            <div class="detail-links">
+                <a href="https://github.com/VKGarg7/MovieTix" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                <a href="https://movietix-rho.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+            </div>
+            <img src="./Images/movietix.png" alt="MovieTix application screenshot" class="detail-hero-img" loading="lazy">
+        </header>
+
+        <!-- ===== OVERVIEW ===== -->
+        <section class="detail-section" id="overview">
+            <div class="detail-section-head"><span class="detail-num">01</span><h2>Overview</h2></div>
+            <p>MovieTix is a full-stack movie ticket booking platform that lets a user browse showtimes, pick seats on a live seat map, and pay securely — the same flow as a real cinema booking site, built end-to-end. It handles authentication, seat inventory, payment processing, and booking confirmation as one connected system rather than a static UI mockup.</p>
+        </section>
+
+        <!-- ===== THE CHALLENGE ===== -->
+        <section class="detail-section" id="challenge">
+            <div class="detail-section-head"><span class="detail-num">02</span><h2>The Challenge</h2></div>
+            <p>Seat booking is a classic concurrency problem: two users can try to book the same seat for the same showtime within milliseconds of each other. A naive implementation checks seat availability, then writes the booking — but between those two steps, another request can slip in and double-book the seat. The system needed to guarantee that once a seat is marked as booked, no other request could ever claim it, without making the checkout flow feel slow or fragile to the user.</p>
+        </section>
+
+        <!-- ===== THE ENGINEERING ===== -->
+        <section class="detail-section" id="engineering">
+            <div class="detail-section-head"><span class="detail-num">03</span><h2>The Engineering</h2></div>
+            <p>The booking flow is built around treating seat selection as a short-lived lock rather than an instant write. When a user selects seats, the backend marks them as held for that session and showtime, before payment even starts. Stripe handles the actual payment; a webhook listener then confirms the booking only after payment succeeds, and releases the hold if the session expires or payment fails. This means a seat can't be paid for by two people, and a seat also can't stay "stuck" as held forever if someone abandons checkout.</p>
+            <p>Authentication is handled by Clerk rather than a hand-rolled auth system, which reduced the surface area for security mistakes around session handling and let the engineering effort go into the booking logic itself — the part of the app that's actually novel.</p>
+        </section>
+
+        <!-- ===== SYSTEM ARCHITECTURE ===== -->
+        <section class="detail-section" id="architecture">
+            <div class="detail-section-head"><span class="detail-num">04</span><h2>System Architecture</h2></div>
+            <p class="arch-caption">Request flow from seat selection through payment confirmation.</p>
+
+            <div class="arch-diagram" id="archDiagram">
+                <svg class="arch-lines" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                    <path class="arch-line" d="M150,60 L150,140"></path>
+                    <path class="arch-line" d="M150,200 L150,280"></path>
+                    <path class="arch-line" d="M150,340 L150,380"></path>
+                    <path class="arch-line" d="M210,170 L390,170"></path>
+                    <path class="arch-line" d="M450,170 L630,170"></path>
+                    <path class="arch-line" d="M690,170 L690,280"></path>
+                    <path class="arch-line" d="M690,280 L450,280"></path>
+                    <path class="arch-line" d="M390,280 L210,280"></path>
+                </svg>
+
+                <div class="arch-node" style="--ax: 16.7%; --ay: 9.5%;">
+                    <i class="fas fa-user"></i>
+                    <span>Client (React)</span>
+                    <small>Seat map UI</small>
+                </div>
+                <div class="arch-node" style="--ax: 16.7%; --ay: 40.5%;">
+                    <i class="fas fa-lock"></i>
+                    <span>Clerk Auth</span>
+                    <small>Session identity</small>
+                </div>
+                <div class="arch-node arch-node-hub" style="--ax: 46.7%; --ay: 40.5%;">
+                    <i class="fas fa-server"></i>
+                    <span>Express API</span>
+                    <small>Seat hold logic</small>
+                </div>
+                <div class="arch-node" style="--ax: 76.7%; --ay: 40.5%;">
+                    <i class="fab fa-stripe-s"></i>
+                    <span>Stripe</span>
+                    <small>Payment + webhook</small>
+                </div>
+                <div class="arch-node" style="--ax: 46.7%; --ay: 66.7%;">
+                    <i class="fas fa-database"></i>
+                    <span>MongoDB</span>
+                    <small>Bookings / seat state</small>
+                </div>
+                <div class="arch-node" style="--ax: 16.7%; --ay: 85.7%;">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Confirmation</span>
+                    <small>Booking finalized</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TECH STACK ===== -->
+        <section class="detail-section" id="techstack">
+            <div class="detail-section-head"><span class="detail-num">05</span><h2>Tech Stack</h2></div>
+            <div class="stack-grid">
+                <div class="stack-chip"><i class="fab fa-react"></i>React</div>
+                <div class="stack-chip"><i class="fab fa-node-js"></i>Node.js</div>
+                <div class="stack-chip"><i class="fas fa-code"></i>Express.js</div>
+                <div class="stack-chip"><i class="fas fa-database"></i>MongoDB</div>
+                <div class="stack-chip"><i class="fab fa-stripe-s"></i>Stripe API</div>
+                <div class="stack-chip"><i class="fas fa-lock"></i>Clerk (Auth)</div>
+                <div class="stack-chip"><i class="fas fa-random"></i>REST APIs</div>
+                <div class="stack-chip"><i class="fas fa-bolt"></i>Webhooks</div>
+            </div>
+        </section>
+
+        <!-- ===== KEY FEATURES ===== -->
+        <section class="detail-section" id="features">
+            <div class="detail-section-head"><span class="detail-num">06</span><h2>Key Features</h2></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-couch"></i><div><strong>Real-time seat selection</strong><p>Live seat map that reflects seats already held or booked by other users.</p></div></li>
+                <li><i class="fab fa-stripe-s"></i><div><strong>Secure Stripe checkout</strong><p>Payment handled entirely through Stripe rather than custom card handling.</p></div></li>
+                <li><i class="fas fa-lock"></i><div><strong>Clerk authentication</strong><p>User sign-in and session management delegated to a dedicated auth provider.</p></div></li>
+                <li><i class="fas fa-bolt"></i><div><strong>Webhook-driven confirmation</strong><p>Bookings are only finalized after Stripe confirms payment succeeded, not before.</p></div></li>
+                <li><i class="fas fa-user-shield"></i><div><strong>Admin dashboard control</strong><p>Admin-side visibility into bookings and showtimes.</p></div></li>
+            </ul>
+        </section>
+
+        <!-- ===== PERFORMANCE ===== -->
+        <section class="detail-section" id="performance">
+            <div class="detail-section-head"><span class="detail-num">07</span><h2>Performance</h2></div>
+            <p>No formal load-testing or production traffic metrics have been collected for this project yet — it hasn't been run at real cinema-booking scale. What can be said with confidence is architectural: the seat-hold-then-confirm pattern is designed to stay correct under concurrent requests, since seat state changes happen as atomic writes rather than read-then-write from the client. The honest performance story here is "designed for correctness under concurrency," not a benchmarked throughput number.</p>
+        </section>
+
+        <!-- ===== RESULTS ===== -->
+        <section class="detail-section" id="results">
+            <div class="detail-section-head"><span class="detail-num">08</span><h2>Results</h2></div>
+            <p>The project is deployed and publicly live (linked above), with the full booking flow — browse, select seats, pay, receive confirmation — working end-to-end rather than stopping at a UI prototype. That's the actual deliverable: a working payment-integrated booking system, not just a seat-map mockup.</p>
+        </section>
+
+        <!-- ===== LESSONS ===== -->
+        <section class="detail-section" id="lessons">
+            <div class="detail-section-head"><span class="detail-num">09</span><h2>Lessons</h2></div>
+            <p>Building the seat-hold logic made the gap between "looks correct" and "is correct under concurrency" concrete rather than theoretical — a UI that visually prevents double-booking in a single-user test can still fail the moment two people click at once, so the guarantee has to live in the backend's write logic, not the frontend. Delegating auth to Clerk instead of building it from scratch was also a deliberate scope decision: it kept the engineering focus on the booking logic that actually made this project worth building.</p>
+        </section>
+
+        <div class="detail-footer-nav">
+            <a href="index.html#projects" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+        </div>
+    </main>
+
+    <footer class="social-footer">
+        <p>© 2025 Vansh Garg | All rights reserved.</p>
+    </footer>
+
+    <script src="project.js"></script>
+</body>
+
+</html>

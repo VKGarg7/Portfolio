@@ -5,10 +5,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vansh Garg | Portfolio</title>
+    <meta name="description" content="Vansh Kumar Garg — Backend-focused Software Engineer specializing in FastAPI, Node.js, PostgreSQL and MongoDB. Explore projects, experience, and skills." />
+    <meta property="og:title" content="Vansh Garg | Portfolio" />
+    <meta property="og:description" content="Backend-focused Software Engineer building scalable APIs and full-stack web applications." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./Images/Untitled design.png" />
+    <meta name="theme-color" content="#05070a" />
 
     <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Montserrat:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
         rel="stylesheet">
 
     <!-- Font Awesome -->
@@ -19,246 +25,553 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="boot-pending">
+
+    <!-- ============ BOOT / IGNITION SEQUENCE ============ -->
+    <div id="bootScreen" class="boot-screen">
+        <button class="boot-skip" id="bootSkip" type="button">Skip Intro <i class="fas fa-forward"></i></button>
+
+        <div class="boot-panel">
+            <div class="boot-check">
+                <p class="boot-heading">SYSTEM CHECK</p>
+                <ul class="boot-list" id="bootList">
+                    <li data-line="ENGINEERING SYSTEMS"><span class="boot-label">ENGINEERING SYSTEMS</span><span class="boot-dots"></span><span class="boot-status">READY</span></li>
+                    <li data-line="CREATIVE ENGINE"><span class="boot-label">CREATIVE ENGINE</span><span class="boot-dots"></span><span class="boot-status">READY</span></li>
+                    <li data-line="BACKEND SYSTEMS"><span class="boot-label">BACKEND SYSTEMS</span><span class="boot-dots"></span><span class="boot-status">READY</span></li>
+                    <li data-line="AI SYSTEMS"><span class="boot-label">AI SYSTEMS</span><span class="boot-dots"></span><span class="boot-status">READY</span></li>
+                </ul>
+            </div>
+
+            <div class="boot-start-wrap" id="bootStartWrap">
+                <button class="boot-start-btn" id="bootStartBtn" type="button">
+                    <span class="boot-start-ring"></span>
+                    <span class="boot-start-label">START ENGINE</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="boot-trails" aria-hidden="true">
+            <span class="trail t1"></span>
+            <span class="trail t2"></span>
+            <span class="trail t3"></span>
+        </div>
+        <div class="boot-flash" id="bootFlash"></div>
+    </div>
+
     <canvas id="particles"></canvas>
+    <div class="grain-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Lap progress bar -->
+    <div class="lap-track">
+        <div class="lap-fill"></div>
+        <div class="lap-car">🏎️</div>
+    </div>
+
+    <!-- RPM Scroll System -->
+    <div class="rpm-widget" id="rpmWidget" aria-hidden="true">
+        <svg viewBox="0 0 100 100" class="rpm-dial">
+            <circle class="rpm-track" cx="50" cy="50" r="42"></circle>
+            <circle class="rpm-arc" id="rpmArc" cx="50" cy="50" r="42"></circle>
+        </svg>
+        <div class="rpm-readout">
+            <span class="rpm-pct" id="rpmPct">0%</span>
+            <span class="rpm-state" id="rpmState">IDLE</span>
+        </div>
+    </div>
+
+    <!-- Mobile simplified scroll indicator -->
+    <div class="rpm-bar-mobile" id="rpmBarMobile" aria-hidden="true">
+        <div class="rpm-bar-fill" id="rpmBarFill"></div>
+    </div>
 
     <nav>
-        <div class="logo">Vansh</div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#toolbox">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
+
+        <div class="dash-links">
+            <a href="#home" class="gauge-link">
+                <span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span>
+            </a>
+            <a href="#about" class="gauge-link">
+                <span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span>
+            </a>
+            <a href="#skills" class="gauge-link">
+                <span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span>
+            </a>
+            <a href="#experience" class="gauge-link">
+                <span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span>
+            </a>
+            <a href="#projects" class="gauge-link">
+                <span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span>
+            </a>
+            <a href="#contact" class="gauge-link">
+                <span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span>
+            </a>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </nav>
 
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" class="mobile-link">Ignition <small>Home</small></a>
+        <a href="#about" class="mobile-link">Driver Profile <small>About</small></a>
+        <a href="#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
+        <a href="#experience" class="mobile-link">Odometer <small>Experience</small></a>
+        <a href="#projects" class="mobile-link">The Garage <small>Projects</small></a>
+        <a href="#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+    </div>
+
+    <!-- ============ HERO / IGNITION ============ -->
     <section id="home" class="hero">
-        <div style="font-size: 4rem; margin-bottom: 1.5rem;">👨‍💻</div>
-        <div class="availability-badge">
-            <span class="dot"></span>
-            <span>Available for New Projects</span>
-        </div>
-        <h1>Hello, I am <br> Vansh Kumar Garg</h1>
-        <h2 class="typing"></h2>
+        <div class="cockpit-grid" aria-hidden="true"></div>
+        <div class="coord-marker cm-tl">N 30.35&deg; · E 76.36&deg;</div>
+        <div class="coord-marker cm-br">SECTOR 01 · IGNITION</div>
 
-        <p class="bio">
-            Backend-focused Software Engineer passionate about building <br> <span class="highlight">scalable
-            web applications</span> and reliable digital systems. I enjoy designing clean <span class="highlight">REST APIs</span>,
-            <span class="highlight">optimizing database workflows</span>, and solving real-world 
-            <span class="highlight">backend challenges</span>. With hands-on experience in 
-            <span class="highlight">FastAPI, Node.js, PostgreSQL, and MongoDB</span>, I focus on writing 
-            efficient, secure, and maintainable code. Backed by  <span class="highlight">600+ LeetCode 
-            problems</span> and practical <br> project experience, I love turning ideas into 
-            high-performance products with <br> smooth user experiences.
-        </p>
+        <div class="hud-frame">
+            <span class="hud-corner tl"></span>
+            <span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span>
+            <span class="hud-corner br"></span>
 
-        <div class="buttons">
-            <a href="#projects" class="btn white">Explore my Work</a>
-            <a href="#contact" class="btn gradient">👋 Let's Connect</a>
+            <div class="cockpit-columns">
+                <!-- ===== Left: identity / controls ===== -->
+                <div class="cockpit-left">
+                    <div class="availability-badge stagger-item" data-stagger="1">
+                        <span class="dot"></span>
+                        <span>Available for New Projects</span>
+                    </div>
+
+                    <h1 class="cockpit-name stagger-item" data-stagger="2">Vansh Kumar Garg</h1>
+
+                    <p class="cockpit-role stagger-item" data-stagger="3">Software Engineer</p>
+                    <p class="cockpit-tagline stagger-item" data-stagger="4">Building high-performance digital experiences</p>
+
+                    <div class="role-indicator stagger-item" data-stagger="5">
+                        <span class="role-caret">&gt;</span>
+                        <span class="role-rotator" id="roleRotator">FRONTEND</span>
+                    </div>
+
+                    <div class="buttons stagger-item" data-stagger="6">
+                        <a href="#projects" class="btn white">Explore my Work</a>
+                        <a href="#contact" class="btn gradient">👋 Let's Connect</a>
+                    </div>
+
+                    <div class="hero-gauges stagger-item" data-stagger="7">
+                        <div class="mini-gauge" id="gauge-rpm">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="gauge-track" cx="60" cy="60" r="52"></circle>
+                                <circle class="gauge-progress" cx="60" cy="60" r="52"></circle>
+                            </svg>
+                            <div class="gauge-label"><span class="gauge-value">7.2K</span><small>RPM<br>YEARS CODING</small></div>
+                        </div>
+                        <div class="mini-gauge" id="gauge-speed">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="gauge-track" cx="60" cy="60" r="52"></circle>
+                                <circle class="gauge-progress" cx="60" cy="60" r="52"></circle>
+                            </svg>
+                            <div class="gauge-label"><span class="gauge-value">600+</span><small>KMH<br>LEETCODE SOLVED</small></div>
+                        </div>
+                        <div class="mini-gauge" id="gauge-fuel">
+                            <svg viewBox="0 0 120 120">
+                                <circle class="gauge-track" cx="60" cy="60" r="52"></circle>
+                                <circle class="gauge-progress" cx="60" cy="60" r="52"></circle>
+                            </svg>
+                            <div class="gauge-label"><span class="gauge-value">FULL</span><small>FUEL<br>READY TO SHIP</small></div>
+                        </div>
+                    </div>
+
+                    <div class="ignition-wrap stagger-item" data-stagger="8">
+                        <button class="ignition-btn" id="ignitionBtn" type="button">
+                            <span class="ignition-ring"></span>
+                            <span class="ignition-label">PUSH TO START</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Right: mechanical centerpiece ===== -->
+                <div class="cockpit-right stagger-item" data-stagger="4" id="centerpieceWrap">
+                    <div class="telemetry-line tl-h" style="top: 18%;"></div>
+                    <div class="telemetry-line tl-h" style="top: 82%;"></div>
+                    <div class="telemetry-line tl-v" style="left: 10%;"></div>
+                    <div class="telemetry-line tl-v" style="left: 90%;"></div>
+                    <span class="status-light sl-1"></span>
+                    <span class="status-light sl-2"></span>
+                    <span class="status-light sl-3"></span>
+
+                    <svg id="centerpiece" class="centerpiece-svg" viewBox="0 0 500 500">
+                        <defs>
+                            <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#ff2745" stop-opacity="0.55"/>
+                                <stop offset="100%" stop-color="#ff2745" stop-opacity="0"/>
+                            </radialGradient>
+                        </defs>
+
+                        <g id="ringOuter" class="cp-ring cp-ring-outer">
+                            <circle cx="250" cy="250" r="230" class="cp-dashed"></circle>
+                            <circle cx="250" cy="250" r="230" class="cp-tick-circle"></circle>
+                        </g>
+
+                        <g id="ringMid" class="cp-ring cp-ring-mid">
+                            <circle cx="250" cy="250" r="175" class="cp-solid-thin"></circle>
+                            <g class="cp-spokes"></g>
+                        </g>
+
+                        <g id="ringInner" class="cp-ring cp-ring-inner">
+                            <circle cx="250" cy="250" r="115" class="cp-dashed-fast"></circle>
+                            <polygon points="250,150 310,190 310,310 250,350 190,310 190,190" class="cp-hex"></polygon>
+                        </g>
+
+                        <circle cx="250" cy="250" r="140" fill="url(#hubGlow)"></circle>
+                        <circle cx="250" cy="250" r="46" class="cp-hub"></circle>
+                        <text x="250" y="243" class="cp-hub-text">VKG</text>
+                        <text x="250" y="262" class="cp-hub-sub">CORE</text>
+                    </svg>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- ============ ABOUT / DRIVER PROFILE ============ -->
+    <section id="about" class="about-section driver-profile">
+        <svg class="ecg-line" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+            <path class="ecg-path" d="M0,60 L120,60 L145,60 L160,15 L180,105 L200,60 L230,60 L340,60 L365,60 L380,20 L400,100 L420,60 L450,60 L560,60 L585,60 L600,15 L620,105 L640,60 L670,60 L780,60 L805,60 L820,20 L840,100 L860,60 L890,60 L1000,60"></path>
+        </svg>
+
+        <h1 class="section-subtitle">SECTOR 02 &middot; ABOUT</h1>
+        <h2 class="section-title">Driver Profile</h2>
+
+        <div class="profile-grid">
+            <!-- Left: avatar + intro -->
+            <div class="profile-intro">
+                <div class="profile-avatar-frame">
+                    <span class="hud-corner tl"></span>
+                    <span class="hud-corner tr"></span>
+                    <span class="hud-corner bl"></span>
+                    <span class="hud-corner br"></span>
+                    <div class="profile-avatar-placeholder">
+                        <span>VG</span>
+                    </div>
+                    <div class="profile-status-badge"><span class="dot"></span>ONLINE</div>
+                </div>
+
+                <p class="profile-lede">
+                    I'm <span class="highlight">Vansh</span> — a backend-focused Software Engineer who likes
+                    taking systems apart to understand how they really work, whether it's a REST API,
+                    a database query plan, or an engine.
+                </p>
+                <p class="profile-lede secondary">
+                    I care about writing code that's fast, reliable, and easy for the next person to
+                    reason about — the same qualities I look for in anything mechanical.
+                </p>
+            </div>
+
+            <!-- Right: metadata + narrative -->
+            <div class="profile-meta">
+                <div class="meta-row">
+                    <span class="meta-label">DRIVER ID</span>
+                    <span class="meta-value">VANSH</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">CLASS</span>
+                    <span class="meta-value">SOFTWARE ENGINEER</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">SPECIALIZATION</span>
+                    <span class="meta-value">FULL-STACK / BACKEND</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">LOCATION</span>
+                    <span class="meta-value">Punjab, India</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">EXPERIENCE</span>
+                    <span class="meta-value">Web Developer Intern @ EllocentLabs</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">CURRENT FOCUS</span>
+                    <span class="meta-value">FastAPI · PostgreSQL · System Design</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">PASSION</span>
+                    <span class="meta-value">CODE / CARS / BIKES</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">TECHNOLOGIES</span>
+                    <span class="meta-value">React · Node.js · FastAPI · PostgreSQL · MongoDB</span>
+                </div>
+
+                <p class="section-desc profile-detail">
+                    I’m a backend-focused <span class="highlight">Software Engineer</span> who enjoys building <span class="highlight">scalable</span> APIs, <span class="highlight">database-driven</span> systems,
+                    and reliable web applications. My experience includes working with <span class="highlight">FastAPI</span>, <span class="highlight">Node.js</span>, <span class="highlight">PostgreSQL</span>,
+                    and <span class="highlight">MongoDB</span> to develop <span class="highlight">secure</span> and <span class="highlight">efficient</span> backend workflows. I’ve built projects involving
+                    <span class="highlight">real-time seat booking</span>, <span class="highlight">payment integration</span>, <span class="highlight">authentication systems</span>, and <span class="highlight">concurrency handling</span>,
+                    which helped me understand how backend architecture directly impacts <span class="highlight">user experience</span> and <span class="highlight">system performance</span>.
+                    Currently pursuing <span class="highlight">Computer Science and Business Systems</span> at <span class="highlight">Thapar Institute of Engineering and Technology</span>, I actively strengthen my problem-solving skills
+                    through <span class="highlight">DSA practice</span>, with <span class="highlight">600+ LeetCode problems solved</span>. I enjoy debugging <span class="highlight">complex issues</span>, optimizing system performance, and
+                    continuously learning modern backend technologies to build <span class="highlight">scalable</span> digital products.
+                </p>
+
+                <div class="spec-stats">
+                    <div class="spec-stat"><span class="spec-num">600+</span><span class="spec-unit">LeetCode Solved</span></div>
+                    <div class="spec-stat"><span class="spec-num">4+</span><span class="spec-unit">Production Builds</span></div>
+                    <div class="spec-stat"><span class="spec-num">2</span><span class="spec-unit">Core Stacks (MERN / FastAPI)</span></div>
+                    <div class="spec-stat"><span class="spec-num">100%</span><span class="spec-unit">Deployed &amp; Live</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SKILLS / PERFORMANCE SYSTEMS ============ -->
+    <section id="skills" class="about-section skills-systems">
+        <h1 class="section-subtitle">SECTOR 03 &middot; SKILLS</h1>
+        <h2 class="section-title">Performance Systems</h2>
+        <p class="garage-caption">Five interconnected systems that power every build in the garage. Hover a module to inspect it.</p>
+
+        <div class="systems-board" id="systemsBoard">
+            <svg class="systems-connectors" id="systemsConnectors" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <line class="conn-line" data-pair="engine transmission" x1="500" y1="80" x2="200" y2="280"></line>
+                <line class="conn-line" data-pair="engine control" x1="500" y1="80" x2="800" y2="280"></line>
+                <line class="conn-line" data-pair="transmission telemetry" x1="200" y1="280" x2="500" y2="480"></line>
+                <line class="conn-line" data-pair="control telemetry" x1="800" y1="280" x2="500" y2="480"></line>
+                <line class="conn-line" data-pair="engine telemetry" x1="500" y1="80" x2="500" y2="480"></line>
+                <line class="conn-line" data-pair="transmission control" x1="200" y1="280" x2="800" y2="280"></line>
+                <line class="conn-line" data-pair="telemetry toolkit" x1="500" y1="480" x2="500" y2="80" data-hub="toolkit"></line>
+            </svg>
+
+            <!-- ENGINE -->
+            <div class="sys-module" id="mod-engine" data-module="engine" style="--mx: 50%; --my: 8%;">
+                <div class="sys-icon"><i class="fas fa-cog"></i></div>
+                <div class="sys-name">ENGINE</div>
+                <div class="sys-sub">Core Programming</div>
+                <div class="sys-panel">
+                    <div class="sys-panel-row"><span>JavaScript</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-panel-row"><span>Python</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-panel-row"><span>C++</span><span class="sys-level working">Working Knowledge</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">THROUGHPUT</span><span class="tele-value" data-target="600">0</span><span class="tele-unit">DSA problems solved</span></div>
+                </div>
+            </div>
+
+            <!-- TRANSMISSION -->
+            <div class="sys-module" id="mod-transmission" data-module="transmission" style="--mx: 12%; --my: 50%;">
+                <div class="sys-icon"><i class="fas fa-server"></i></div>
+                <div class="sys-name">TRANSMISSION</div>
+                <div class="sys-sub">Backend Systems</div>
+                <div class="sys-panel">
+                    <div class="sys-panel-row"><span>Node.js / Express.js</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>FastAPI</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>REST APIs / JWT</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">LOAD</span><span class="tele-value" data-target="4">0</span><span class="tele-unit">production builds shipped</span></div>
+                </div>
+            </div>
+
+            <!-- CONTROL UNIT -->
+            <div class="sys-module" id="mod-control" data-module="control" style="--mx: 88%; --my: 50%;">
+                <div class="sys-icon"><i class="fas fa-microchip"></i></div>
+                <div class="sys-name">CONTROL UNIT</div>
+                <div class="sys-sub">Frontend</div>
+                <div class="sys-panel">
+                    <div class="sys-panel-row"><span>React / Next.js</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>Tailwind CSS</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>HTML / CSS</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">RESPONSE</span><span class="tele-value" data-target="100">0</span><span class="tele-unit">% responsive builds shipped</span></div>
+                </div>
+            </div>
+
+            <!-- TELEMETRY -->
+            <div class="sys-module" id="mod-telemetry" data-module="telemetry" style="--mx: 50%; --my: 88%;">
+                <div class="sys-icon"><i class="fas fa-database"></i></div>
+                <div class="sys-name">TELEMETRY</div>
+                <div class="sys-sub">Databases</div>
+                <div class="sys-panel">
+                    <div class="sys-panel-row"><span>PostgreSQL</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>MongoDB</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>Schema Migrations (Alembic)</span><span class="sys-level experienced">Experienced</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">QUERIES</span><span class="tele-value" data-target="2">0</span><span class="tele-unit">core database engines</span></div>
+                </div>
+            </div>
+
+            <!-- TOOLKIT -->
+            <div class="sys-module sys-module-hub" id="mod-toolkit" data-module="toolkit" style="--mx: 50%; --my: 50%;">
+                <div class="sys-icon"><i class="fas fa-toolbox"></i></div>
+                <div class="sys-name">TOOLKIT</div>
+                <div class="sys-sub">Developer Tools</div>
+                <div class="sys-panel">
+                    <div class="sys-panel-row"><span>Postman</span><span class="sys-level experienced">Experienced</span></div>
+                    <div class="sys-panel-row"><span>Stripe API</span><span class="sys-level experienced">Experienced</span></div>
+                    <div class="sys-panel-row"><span>Git</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">UPTIME</span><span class="tele-value" data-target="100">0</span><span class="tele-unit">% deployed &amp; live</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="legend-key">
+            <span class="legend-item"><span class="legend-dot primary"></span>Primary</span>
+            <span class="legend-item"><span class="legend-dot production"></span>Production Experience</span>
+            <span class="legend-item"><span class="legend-dot experienced"></span>Experienced</span>
+            <span class="legend-item"><span class="legend-dot working"></span>Working Knowledge</span>
+        </div>
+    </section>
+
+    <!-- ============ EXPERIENCE / ODOMETER ============ -->
     <section id="experience" class="experience-section about-section">
-        <h2 class="section-title">Professional Experience</h2>
-        <div class="timeline section-desc">
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <h3>Web Developer Intern</h3>
-                    <p class="experience-company">EllocentLabs</p>
-                    <p class="experience-duration">Feb 2026 – Present</p>
-                    <ul class="experience-responsibilities">
-                        <li>Designed and debugged backend APIs using <span class="highlight">FastAPI</span> for <span class="highlight">business logic, validation,</span>, and <span class="highlight">error handling</span>.</li>
-                        <li>Analyzed API <span class="highlight">request/response</span> flows to identify and fix endpoint issues, improving system stability.</li>
-                        <li>Wrote and optimized <span class="highlight">SQL queries</span> in <span class="highlight">PostgreSQL</span> using <span class="highlight">JOINs</span> and <span class="highlight">aggregations</span> for efficient data handling.</li>
-                        <li>Managed <span class="highlight">database schema migrations</span> using <span class="highlight">Alembic</span> to ensure smooth updates across environments.</li>
-                        <li>Collaborated with frontend developers to resolve <span class="highlight">integration issues</span> and improve <span class="highlight">end-to-end reliability</span>.</li>
-                        <li>Used <span class="highlight">application logs</span> and <span class="highlight">request tracing</span> to debug API failures and identify <span class="highlight">performance bottlenecks</span>.</li>
-                        <li>Worked on improving <span class="highlight">backend reliability</span>, <span class="highlight">debugging production-level issues</span>, and ensuring consistent data flow.</li>
-                    </ul>
+        <h1 class="section-subtitle">SECTOR 04 &middot; EXPERIENCE</h1>
+        <h2 class="section-title">Odometer — The Journey So Far</h2>
+
+        <div class="route-track" id="routeTrack">
+            <svg class="route-svg" id="routeSvg" viewBox="0 0 100 400" preserveAspectRatio="none" aria-hidden="true">
+                <path class="route-path-bg" d="M50,0 L50,400"></path>
+                <path class="route-path-fill" id="routePathFill" d="M50,0 L50,400"></path>
+            </svg>
+            <div class="route-indicator" id="routeIndicator" aria-hidden="true">
+                <span class="route-indicator-glow"></span>
+            </div>
+
+            <div class="route-checkpoints">
+                <div class="checkpoint" data-checkpoint="0">
+                    <div class="checkpoint-marker">
+                        <span class="checkpoint-ring"></span>
+                        <span class="checkpoint-core"></span>
+                    </div>
+                    <div class="checkpoint-card">
+                        <div class="odometer-tag">CHECKPOINT — ACTIVE</div>
+                        <h3>Web Developer Intern</h3>
+                        <p class="experience-company">EllocentLabs</p>
+                        <p class="experience-duration">Feb 2026 – Present</p>
+                        <div class="checkpoint-tech">
+                            <span>FastAPI</span><span>PostgreSQL</span><span>Alembic</span><span>REST APIs</span>
+                        </div>
+                        <ul class="experience-responsibilities">
+                            <li>Designed and debugged backend APIs using <span class="highlight">FastAPI</span> for <span class="highlight">business logic, validation,</span>, and <span class="highlight">error handling</span>.</li>
+                            <li>Analyzed API <span class="highlight">request/response</span> flows to identify and fix endpoint issues, improving system stability.</li>
+                            <li>Wrote and optimized <span class="highlight">SQL queries</span> in <span class="highlight">PostgreSQL</span> using <span class="highlight">JOINs</span> and <span class="highlight">aggregations</span> for efficient data handling.</li>
+                            <li>Managed <span class="highlight">database schema migrations</span> using <span class="highlight">Alembic</span> to ensure smooth updates across environments.</li>
+                            <li>Collaborated with frontend developers to resolve <span class="highlight">integration issues</span> and improve <span class="highlight">end-to-end reliability</span>.</li>
+                            <li>Used <span class="highlight">application logs</span> and <span class="highlight">request tracing</span> to debug API failures and identify <span class="highlight">performance bottlenecks</span>.</li>
+                            <li>Worked on improving <span class="highlight">backend reliability</span>, <span class="highlight">debugging production-level issues</span>, and ensuring consistent data flow.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- ============ PROJECTS / THE GARAGE ============ -->
+    <section id="projects" class="garage-showcase">
+        <h1 class="section-subtitle">SECTOR 05 &middot; PROJECTS</h1>
+        <h1 class="section-title">The Garage — Builds &amp; Track Records</h1>
+        <p class="garage-caption">Each build below has been road-tested, deployed, and driven in production.</p>
 
-    <section id="projects">
-        <h1 class="section-subtitle">PROJECTS</h1>
-        <h1 class="section-title">What I've Built</h1>
+        <div class="spec-showcase">
 
-        <div class="project-wrapper">
-            <!-- Row 1 -->
-            <div class="project-row row-1">
-                <!-- Project 1 -->
-                <div class="card-wrapper">
-                    <div class="flip-card">
-                        <div class="flip-inner">
-                            <div class="flip-front">
-                                <img src="./Images/movietix.png" alt="MovieTix Screenshot">
-                                <div class="flip-front-content">
-                                    <h3>MovieTix</h3>
-                                    <p class="project-tags">React · Node.js · Express · MongoDB · Stripe · Clerk
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flip-back">
-                                <h3>MovieTix</h3>
-                                <p class="project-desc">A full-stack movie ticket booking platform with real-time seat
-                                    selection, secure Stripe payments, and responsive UI.
-                                    Features include user authentication (Clerk), automated booking confirmations via
-                                    webhooks, and admin dashboard control.</p>
-                                <div class="card-buttons">
-                                    <a href="https://github.com/VKGarg7/MovieTix" class="btn" target="_blank"> <i
-                                            class="fab fa-github"></i>GitHub</a>
-                                    <a href="https://movietix-rho.vercel.app/" class="btn btn-secondary"
-                                        target="_blank"><i class="fas fa-external-link-alt"></i>Live</a>
-                                </div>
-                            </div>
-                        </div>
+            <!-- PROJECT 01 -->
+            <article class="spec-panel" data-project="01">
+                <div class="spec-visual">
+                    <span class="scan-light"></span>
+                    <img src="./Images/movietix.png" alt="MovieTix Screenshot" loading="lazy">
+                </div>
+                <div class="spec-info">
+                    <div class="spec-index">PROJECT 01</div>
+                    <h3 class="spec-name">MovieTix</h3>
+                    <div class="spec-fields">
+                        <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Web Application</span></div>
+                        <div class="spec-field"><span class="spec-field-label">ENGINE</span><span class="spec-field-value">React / Node.js / Express</span></div>
+                        <div class="spec-field"><span class="spec-field-label">SYSTEMS</span><span class="spec-field-value">MongoDB / Stripe / Clerk</span></div>
+                        <div class="spec-field"><span class="spec-field-label">STATUS</span><span class="spec-field-value status-deployed">DEPLOYED</span></div>
+                    </div>
+                    <p class="spec-desc">A full-stack movie ticket booking platform with real-time seat selection, secure Stripe payments, and a responsive UI. Includes user authentication via Clerk, automated booking confirmations via webhooks, and an admin dashboard.</p>
+                    <p class="spec-achievement"><span class="achievement-label">KEY ACHIEVEMENT</span> Real-time seat-locking during checkout to prevent double-booking under concurrent demand.</p>
+                    <div class="spec-links">
+                        <a href="project-movietix.html" class="btn btn-details"><i class="fas fa-magnifying-glass"></i>View Details</a>
+                        <a href="https://github.com/VKGarg7/MovieTix" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                        <a href="https://movietix-rho.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
                     </div>
                 </div>
+            </article>
 
-                <!-- Project 2 -->
-                <div class="card-wrapper">
-                    <div class="flip-card">
-                        <div class="flip-inner">
-                            <div class="flip-front">
-                                <img src="./Images/food-delivery.webp" alt="Food_Delivery_Website Screenshot">
-                                <div class="flip-front-content">
-                                    <h3>Food Delivery</h3>
-                                    <p class="project-tags">React · Redux Toolkit · Node.js · Express · MongoDB · Stripe
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flip-back">
-                                <h3>Food Delivery Website</h3>
-                                <p class="project-desc">A full-stack food delivery app with real-time menu updates,
-                                    secure checkout, user roles for customers/restaurants/delivery agents, and Stripe
-                                    payment integration..</p>
-                                <div class="card-buttons">
-                                    <a href="https://github.com/VKGarg7/Food_Delivery_Website" class="btn"
-                                        target="_blank"><i class="fab fa-github"></i>GitHub</a>
-                                    <a href="https://food-delivery-website-one-chi.vercel.app/" class="btn btn-secondary" target="_blank"><i
-                                            class="fas fa-external-link-alt"></i>Live</a>
-                                </div>
-                            </div>
-                        </div>
+            <!-- PROJECT 02 -->
+            <article class="spec-panel reverse" data-project="02">
+                <div class="spec-visual">
+                    <span class="scan-light"></span>
+                    <img src="./Images/food-delivery.webp" alt="Food Delivery Website Screenshot" loading="lazy">
+                </div>
+                <div class="spec-info">
+                    <div class="spec-index">PROJECT 02</div>
+                    <h3 class="spec-name">Food Delivery</h3>
+                    <div class="spec-fields">
+                        <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Web Application</span></div>
+                        <div class="spec-field"><span class="spec-field-label">ENGINE</span><span class="spec-field-value">React / Redux Toolkit / Node.js</span></div>
+                        <div class="spec-field"><span class="spec-field-label">SYSTEMS</span><span class="spec-field-value">Express / MongoDB / Stripe</span></div>
+                        <div class="spec-field"><span class="spec-field-label">STATUS</span><span class="spec-field-value status-deployed">DEPLOYED</span></div>
+                    </div>
+                    <p class="spec-desc">A full-stack food delivery app with real-time menu updates, secure checkout, and role-based access for customers, restaurants, and delivery agents, backed by Stripe payment integration.</p>
+                    <p class="spec-achievement"><span class="achievement-label">KEY ACHIEVEMENT</span> Built a three-way role system (customer / restaurant / delivery agent) sharing one backend without permission leaks.</p>
+                    <div class="spec-links">
+                        <a href="project-fooddelivery.html" class="btn btn-details"><i class="fas fa-magnifying-glass"></i>View Details</a>
+                        <a href="https://github.com/VKGarg7/Food_Delivery_Website" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                        <a href="https://food-delivery-website-one-chi.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
                     </div>
                 </div>
+            </article>
 
-
-            </div>
-
-            <div class="project-row row-2">
-
-                <div class="card-wrapper">
-                    <div class="flip-card">
-                        <div class="flip-inner">
-                            <div class="flip-front">
-                                <img src="./Images/ecom.png" alt="E-Commerce Screenshot">
-                                <div class="flip-front-content">
-                                    <h3>E-Commerce</h3>
-                                    <p class="project-tags">HTML · CSS · JavaScript · React · Tailwind</p>
-                                </div>
-                            </div>
-                            <div class="flip-back">
-                                <h3>E-Commerce Website</h3>
-                                <p class="project-desc">A responsive e-commerce front-end featuring product listings,
-                                    category views, and promotional displays. Designed for mobile-first experiences with
-                                    admin controls for real-time product updates.</p>
-                                <div class="card-buttons">
-                                    <a href="https://github.com/VKGarg7/E-commerce-website" class="btn"
-                                        target="_blank"><i class="fab fa-github"></i>GitHub</a>
-                                    <a href="https://vkgarg7.github.io/E-commerce-website/" class="btn btn-secondary"
-                                        target="_blank"><i class="fas fa-external-link-alt"></i>Live</a>
-                                </div>
-                            </div>
-                        </div>
+            <!-- PROJECT 03 -->
+            <article class="spec-panel" data-project="03">
+                <div class="spec-visual">
+                    <span class="scan-light"></span>
+                    <img src="./Images/ecom.png" alt="E-Commerce Screenshot" loading="lazy">
+                </div>
+                <div class="spec-info">
+                    <div class="spec-index">PROJECT 03</div>
+                    <h3 class="spec-name">E-Commerce</h3>
+                    <div class="spec-fields">
+                        <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Frontend Storefront</span></div>
+                        <div class="spec-field"><span class="spec-field-label">ENGINE</span><span class="spec-field-value">React / JavaScript</span></div>
+                        <div class="spec-field"><span class="spec-field-label">SYSTEMS</span><span class="spec-field-value">HTML / CSS / Tailwind</span></div>
+                        <div class="spec-field"><span class="spec-field-label">STATUS</span><span class="spec-field-value status-deployed">DEPLOYED</span></div>
+                    </div>
+                    <p class="spec-desc">A responsive e-commerce front-end featuring product listings, category views, and promotional displays — designed mobile-first with admin controls for real-time product updates.</p>
+                    <p class="spec-achievement"><span class="achievement-label">KEY ACHIEVEMENT</span> Mobile-first layout system that reflows cleanly from a 4-column grid down to single-column without losing hierarchy.</p>
+                    <div class="spec-links">
+                        <a href="project-ecommerce.html" class="btn btn-details"><i class="fas fa-magnifying-glass"></i>View Details</a>
+                        <a href="https://github.com/VKGarg7/E-commerce-website" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                        <a href="https://vkgarg7.github.io/E-commerce-website/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
                     </div>
                 </div>
+            </article>
 
-                <div class="card-wrapper">
-                    <div class="flip-card">
-                        <div class="flip-inner">
-                            <div class="flip-front">
-                                <img src="./Images/amazon.png" alt="Amazon Clone Screenshot">
-                                <div class="flip-front-content">
-                                    <h3>Amazon Clone</h3>
-                                    <p class="project-tags">HTML · CSS </p>
-                                </div>
-                            </div>
-                            <div class="flip-back">
-                                <h3>Amazon Clone</h3>
-                                <p class="project-desc">A responsive front-end clone of Amazon featuring a clean product
-                                    layout, navbar, and hover interactions. Designed for UI replication using semantic
-                                    HTML and modern CSS techniques.</p>
-                                <div class="card-buttons">
-                                    <a href="https://github.com/VKGarg7/amazon-clone" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
-                                    <a href="https://vkgarg7.github.io/amazon-clone/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live</a>
-                                </div>
-                            </div>
-                        </div>
+            <!-- PROJECT 04 -->
+            <article class="spec-panel reverse" data-project="04">
+                <div class="spec-visual">
+                    <span class="scan-light"></span>
+                    <img src="./Images/amazon.png" alt="Amazon Clone Screenshot" loading="lazy">
+                </div>
+                <div class="spec-info">
+                    <div class="spec-index">PROJECT 04</div>
+                    <h3 class="spec-name">Amazon Clone</h3>
+                    <div class="spec-fields">
+                        <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">UI Replication</span></div>
+                        <div class="spec-field"><span class="spec-field-label">ENGINE</span><span class="spec-field-value">HTML / CSS</span></div>
+                        <div class="spec-field"><span class="spec-field-label">SYSTEMS</span><span class="spec-field-value">Semantic HTML</span></div>
+                        <div class="spec-field"><span class="spec-field-label">STATUS</span><span class="spec-field-value status-deployed">DEPLOYED</span></div>
+                    </div>
+                    <p class="spec-desc">A responsive front-end clone of Amazon featuring a clean product layout, navbar, and hover interactions — built with semantic HTML and modern CSS techniques.</p>
+                    <p class="spec-achievement"><span class="achievement-label">KEY ACHIEVEMENT</span> Pixel-accurate UI replication using pure CSS, no component framework.</p>
+                    <div class="spec-links">
+                        <a href="project-amazonclone.html" class="btn btn-details"><i class="fas fa-magnifying-glass"></i>View Details</a>
+                        <a href="https://github.com/VKGarg7/amazon-clone" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                        <a href="https://vkgarg7.github.io/amazon-clone/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
                     </div>
                 </div>
+            </article>
 
-            </div>
-    </section>
-
-    <section class="about-section" id="toolbox">
-        <h2 class="section-title">About Me</h2>
-        <h1 class="section-title">Backend-Focused Full Stack Developer</h1>
-        <p class="section-desc">
-            I’m a backend-focused <span class="highlight">Software Engineer</span> who enjoys building <span class="highlight">scalable</span> APIs, <span class="highlight">database-driven</span> systems, 
-            and reliable web applications. My experience includes working with <span class="highlight">FastAPI</span>, <span class="highlight">Node.js</span>, <span class="highlight">PostgreSQL</span>, 
-            and <span class="highlight">MongoDB</span> to develop <span class="highlight">secure</span> and <span class="highlight">efficient</span> backend workflows. I’ve built projects involving 
-            <span class="highlight">real-time seat booking</span>, <span class="highlight">payment integration</span>, <span class="highlight">authentication systems</span>, and <span class="highlight">concurrency handling</span>,
-            which helped me understand how backend architecture directly impacts <span class="highlight">user experience</span> and <span class="highlight">system performance</span>.
-            Currently pursuing <span class="highlight">Computer Science and Business Systems</span> at <span class="highlight">Thapar Institute of Engineering and Technology</span>, I actively strengthen my problem-solving skills 
-            through <span class="highlight">DSA practice</span>, with <span class="highlight">600+ LeetCode problems solved</span>. I enjoy debugging <span class="highlight">complex issues</span>, optimizing system performance, and 
-            continuously learning modern backend technologies to build <span class="highlight">scalable</span> digital products.
-        </p>
-        <h3 class="tools-title">My Toolbox</h3>
-        <div class="toolbox-box">
-            <div class="toolbox-wrapper">
-                <div class="toolbox-row">
-                    <div class="tool-card"><i class="fab fa-react"></i><span>React</span></div>
-                    <div class="tool-card"><i class="fab fa-node-js"></i><span>Node.js</span></div>
-                    <div class="tool-card"><i class="fas fa-database"></i><span>MongoDB</span></div>
-                    <div class="tool-card"><i class="fab fa-js-square"></i><span>JavaScript</span></div>
-                    <div class="tool-card"><i class="fas fa-code"></i><span>Express.js</span></div>
-                    <div class="tool-card"><i class="fas fa-lock"></i><span>JWT</span></div>
-                    <div class="tool-card"><i class="fab fa-stripe-s"></i><span>Stripe API</span></div>
-                    <div class="tool-card"><i class="fas fa-random"></i><span>RESTful APIs</span></div>
-                    <div class="tool-card"><i class="fas fa-terminal"></i><span>Postman</span></div>
-                    <div class="tool-card"><i class="fas fa-wind"></i><span>Tailwind CSS</span></div>
-                    <div class="tool-card"><i class="fab fa-python"></i><span>Python</span></div>
-                    <div class="tool-card"><i class="fas fa-rocket"></i><span>FastAPI</span></div>
-                    <div class="tool-card"><i class="fab fa-js"></i><span>Next.js</span></div>
-                    <div class="tool-card"><i class="fas fa-database"></i><span>PostgreSQL</span></div>
-                </div>
-                <div class="toolbox-row duplicate">
-                    <div class="tool-card"><i class="fab fa-react"></i><span>React</span></div>
-                    <div class="tool-card"><i class="fab fa-node-js"></i><span>Node.js</span></div>
-                    <div class="tool-card"><i class="fas fa-database"></i><span>MongoDB</span></div>
-                    <div class="tool-card"><i class="fab fa-js-square"></i><span>JavaScript</span></div>
-                    <div class="tool-card"><i class="fas fa-code"></i><span>Express.js</span></div>
-                    <div class="tool-card"><i class="fas fa-lock"></i><span>JWT</span></div>
-                    <div class="tool-card"><i class="fab fa-stripe-s"></i><span>Stripe API</span></div>
-                    <div class="tool-card"><i class="fas fa-random"></i><span>RESTful APIs</span></div>
-                    <div class="tool-card"><i class="fas fa-terminal"></i><span>Postman</span></div>
-                    <div class="tool-card"><i class="fas fa-wind"></i><span>Tailwind CSS</span></div>
-                    <div class="tool-card"><i class="fab fa-python"></i><span>Python</span></div>
-                    <div class="tool-card"><i class="fas fa-rocket"></i><span>FastAPI</span></div>
-                    <div class="tool-card"><i class="fab fa-js"></i><span>Next.js</span></div>
-                    <div class="tool-card"><i class="fas fa-database"></i><span>PostgreSQL</span></div>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Contact -->
+    <!-- ============ CONTACT / PIT LANE ============ -->
     <section id="contact" class="contact">
+        <div class="contact-inner">
+        <h1 class="section-subtitle">SECTOR 06 &middot; CONTACT</h1>
+        <h2 class="section-title" style="margin-bottom: 0.5rem;">Pit Lane Communication</h2>
         <div class="contact-header">
             <div style="flex:1; min-width: 250px;">
                 <h2 class="contact-h2">Let's create something amazing
@@ -289,6 +602,7 @@
         <p class="contact-quote">“Clean code. Great UX. Real results.”</p>
 
         <p class="type-text">Open to Freelance · Remote · Internships · Full-Time</p>
+        </div>
         <a href="#home" class="scroll-up"><i class="fas fa-arrow-up"></i></a>
 
 
@@ -305,5 +619,3 @@
 
 
 </html>
-
-

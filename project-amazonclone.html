@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazon Clone — Project Inspection | Vansh Garg</title>
+    <meta name="description" content="Inspection report for a responsive Amazon UI clone built with semantic HTML and modern CSS." />
+    <meta name="theme-color" content="#05070a" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="project-detail.css" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+    <div class="grain-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <div class="detail-progress-track">
+        <div class="detail-progress-fill" id="detailProgressFill"></div>
+    </div>
+
+    <nav>
+        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
+        <div class="dash-links">
+            <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span></a>
+            <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span></a>
+            <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span></a>
+            <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span></a>
+            <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span></a>
+            <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span></a>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" class="mobile-link">Ignition <small>Home</small></a>
+        <a href="index.html#about" class="mobile-link">Driver Profile <small>About</small></a>
+        <a href="index.html#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
+        <a href="index.html#experience" class="mobile-link">Odometer <small>Experience</small></a>
+        <a href="index.html#projects" class="mobile-link">The Garage <small>Projects</small></a>
+        <a href="index.html#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+    </div>
+
+    <main class="detail-main">
+
+        <header class="detail-hero">
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+            <div class="detail-index">PROJECT 04 · INSPECTION REPORT</div>
+            <h1 class="detail-title">Amazon Clone</h1>
+            <p class="detail-subtitle">A responsive front-end clone of Amazon featuring a clean product layout, navbar, and hover interactions.</p>
+            <div class="detail-quickfacts">
+                <div class="qf"><span class="qf-label">CLASS</span><span class="qf-value">UI Replication</span></div>
+                <div class="qf"><span class="qf-label">ENGINE</span><span class="qf-value">HTML / CSS</span></div>
+                <div class="qf"><span class="qf-label">SYSTEMS</span><span class="qf-value">Semantic HTML</span></div>
+                <div class="qf"><span class="qf-label">STATUS</span><span class="qf-value status-deployed">DEPLOYED</span></div>
+            </div>
+            <div class="detail-links">
+                <a href="https://github.com/VKGarg7/amazon-clone" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                <a href="https://vkgarg7.github.io/amazon-clone/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+            </div>
+            <img src="./Images/amazon.png" alt="Amazon Clone application screenshot" class="detail-hero-img" loading="lazy">
+        </header>
+
+        <section class="detail-section" id="overview">
+            <div class="detail-section-head"><span class="detail-num">01</span><h2>Overview</h2></div>
+            <p>A UI replication project: rebuilding Amazon's product listing page — navbar, hero banner, product grid, and hover interactions — using only semantic HTML and modern CSS, with no framework and no backend. The goal was pixel-level layout accuracy, not a functioning store.</p>
+        </section>
+
+        <section class="detail-section" id="challenge">
+            <div class="detail-section-head"><span class="detail-num">02</span><h2>The Challenge</h2></div>
+            <p>Amazon's real layout uses dense, irregular grids — different card sizes, overlapping promotional banners, and a navbar with several distinct interactive zones (search, account, cart, categories) packed into one bar. Reproducing that visual density accurately with plain CSS, without utility-class shortcuts or a component library, meant getting spacing and alignment exactly right by hand.</p>
+        </section>
+
+        <section class="detail-section" id="engineering">
+            <div class="detail-section-head"><span class="detail-num">03</span><h2>The Engineering</h2></div>
+            <p>Built with semantic HTML elements (nav, section, article) rather than generic divs, so the structure carries meaning on its own, and CSS Grid/Flexbox handle the layout rather than fixed pixel positioning — which is part of why the result stays responsive across screen sizes despite the visual density of the original design.</p>
+        </section>
+
+        <section class="detail-section" id="techstack">
+            <div class="detail-section-head"><span class="detail-num">04</span><h2>Tech Stack</h2></div>
+            <div class="stack-grid">
+                <div class="stack-chip"><i class="fab fa-html5"></i>HTML5</div>
+                <div class="stack-chip"><i class="fab fa-css3-alt"></i>CSS3</div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="features">
+            <div class="detail-section-head"><span class="detail-num">05</span><h2>Key Features</h2></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-bars"></i><div><strong>Multi-zone navbar</strong><p>Search, account, and cart areas replicated as distinct interactive regions.</p></div></li>
+                <li><i class="fas fa-th"></i><div><strong>Dense product grid</strong><p>Variable-sized product cards laid out with CSS Grid.</p></div></li>
+                <li><i class="fas fa-mouse-pointer"></i><div><strong>Hover interactions</strong><p>Navbar and product card hover states matching the source design.</p></div></li>
+            </ul>
+        </section>
+
+        <section class="detail-section" id="results">
+            <div class="detail-section-head"><span class="detail-num">06</span><h2>Results</h2></div>
+            <p>The clone is deployed and live (linked above), reproducing Amazon's product-listing layout, navbar, and hover behavior with plain HTML/CSS — no component framework involved. It stands as a UI-fidelity and layout exercise rather than a functioning storefront.</p>
+        </section>
+
+        <section class="detail-section" id="lessons">
+            <div class="detail-section-head"><span class="detail-num">07</span><h2>Lessons</h2></div>
+            <p>Cloning a real, high-density production UI by hand is a different skill from building an original layout from scratch — it forces close attention to spacing, alignment, and hover-state details that are easy to skip when there's no reference to hold yourself to. It was a useful exercise in reading someone else's design decisions and reproducing them precisely with plain CSS.</p>
+        </section>
+
+        <div class="detail-footer-nav">
+            <a href="index.html#projects" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+        </div>
+    </main>
+
+    <footer class="social-footer">
+        <p>© 2025 Vansh Garg | All rights reserved.</p>
+    </footer>
+
+    <script src="project.js"></script>
+</body>
+
+</html>

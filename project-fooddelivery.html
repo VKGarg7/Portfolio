@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Delivery — Project Inspection | Vansh Garg</title>
+    <meta name="description" content="Inspection report for a full-stack Food Delivery platform built with React, Redux Toolkit, Node.js, Express, MongoDB, and Stripe." />
+    <meta name="theme-color" content="#05070a" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="project-detail.css" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+    <div class="grain-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <div class="detail-progress-track">
+        <div class="detail-progress-fill" id="detailProgressFill"></div>
+    </div>
+
+    <nav>
+        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
+        <div class="dash-links">
+            <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span></a>
+            <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span></a>
+            <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span></a>
+            <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span></a>
+            <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span></a>
+            <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span></a>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" class="mobile-link">Ignition <small>Home</small></a>
+        <a href="index.html#about" class="mobile-link">Driver Profile <small>About</small></a>
+        <a href="index.html#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
+        <a href="index.html#experience" class="mobile-link">Odometer <small>Experience</small></a>
+        <a href="index.html#projects" class="mobile-link">The Garage <small>Projects</small></a>
+        <a href="index.html#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+    </div>
+
+    <main class="detail-main">
+
+        <header class="detail-hero">
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+            <div class="detail-index">PROJECT 02 · INSPECTION REPORT</div>
+            <h1 class="detail-title">Food Delivery</h1>
+            <p class="detail-subtitle">A full-stack food delivery app with real-time menu updates, secure checkout, and role-based access for three different user types.</p>
+            <div class="detail-quickfacts">
+                <div class="qf"><span class="qf-label">CLASS</span><span class="qf-value">Web Application</span></div>
+                <div class="qf"><span class="qf-label">ENGINE</span><span class="qf-value">React / Redux Toolkit / Node.js</span></div>
+                <div class="qf"><span class="qf-label">SYSTEMS</span><span class="qf-value">Express / MongoDB / Stripe</span></div>
+                <div class="qf"><span class="qf-label">STATUS</span><span class="qf-value status-deployed">DEPLOYED</span></div>
+            </div>
+            <div class="detail-links">
+                <a href="https://github.com/VKGarg7/Food_Delivery_Website" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                <a href="https://food-delivery-website-one-chi.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+            </div>
+            <img src="./Images/food-delivery.webp" alt="Food Delivery application screenshot" class="detail-hero-img" loading="lazy">
+        </header>
+
+        <section class="detail-section" id="overview">
+            <div class="detail-section-head"><span class="detail-num">01</span><h2>Overview</h2></div>
+            <p>Food Delivery is a full-stack ordering platform that connects three different kinds of users on one backend: customers browsing menus and placing orders, restaurants managing what they sell, and delivery agents fulfilling orders. Rather than being a single-role storefront, the app had to model three overlapping workflows without letting any one role see or touch data it shouldn't.</p>
+        </section>
+
+        <section class="detail-section" id="challenge">
+            <div class="detail-section-head"><span class="detail-num">02</span><h2>The Challenge</h2></div>
+            <p>The core difficulty wasn't the UI — it was the access model. A customer, a restaurant, and a delivery agent all interact with the same order object, but each should only be able to see and modify the parts relevant to their role: a customer places an order and tracks it, a restaurant accepts/prepares it, a delivery agent picks it up and marks it delivered. Getting this wrong in either direction — too permissive or too restrictive — breaks the app for one of the three user types.</p>
+        </section>
+
+        <section class="detail-section" id="engineering">
+            <div class="detail-section-head"><span class="detail-num">03</span><h2>The Engineering</h2></div>
+            <p>Role-based access control is enforced at the API layer: each Express route checks the authenticated user's role before allowing an action on an order, rather than trusting the frontend to only show the "right" buttons to each user type. Redux Toolkit manages client-side state for menus, cart, and order status so the UI can reflect live order-status changes (placed → accepted → out for delivery → delivered) without a full page reload. Checkout is handled through Stripe, keeping payment logic out of the app's own database layer.</p>
+        </section>
+
+        <section class="detail-section" id="architecture">
+            <div class="detail-section-head"><span class="detail-num">04</span><h2>System Architecture</h2></div>
+            <p class="arch-caption">Three roles, one backend, one order lifecycle.</p>
+
+            <div class="arch-diagram" id="archDiagram">
+                <svg class="arch-lines" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                    <path class="arch-line" d="M150,60 L420,170"></path>
+                    <path class="arch-line" d="M420,60 L420,140"></path>
+                    <path class="arch-line" d="M690,60 L420,170"></path>
+                    <path class="arch-line" d="M420,200 L420,280"></path>
+                    <path class="arch-line" d="M420,340 L420,380"></path>
+                </svg>
+
+                <div class="arch-node" style="--ax: 16.7%; --ay: 14.3%;">
+                    <i class="fas fa-user"></i>
+                    <span>Customer</span>
+                    <small>Browse / order</small>
+                </div>
+                <div class="arch-node" style="--ax: 46.7%; --ay: 14.3%;">
+                    <i class="fas fa-store"></i>
+                    <span>Restaurant</span>
+                    <small>Menu / accept orders</small>
+                </div>
+                <div class="arch-node" style="--ax: 76.7%; --ay: 14.3%;">
+                    <i class="fas fa-motorcycle"></i>
+                    <span>Delivery Agent</span>
+                    <small>Fulfill orders</small>
+                </div>
+                <div class="arch-node arch-node-hub" style="--ax: 46.7%; --ay: 40.5%;">
+                    <i class="fas fa-server"></i>
+                    <span>Express API</span>
+                    <small>Role-based access control</small>
+                </div>
+                <div class="arch-node" style="--ax: 46.7%; --ay: 66.7%;">
+                    <i class="fas fa-database"></i>
+                    <span>MongoDB</span>
+                    <small>Orders / menus / users</small>
+                </div>
+                <div class="arch-node" style="--ax: 46.7%; --ay: 90.5%;">
+                    <i class="fab fa-stripe-s"></i>
+                    <span>Stripe</span>
+                    <small>Checkout</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="techstack">
+            <div class="detail-section-head"><span class="detail-num">05</span><h2>Tech Stack</h2></div>
+            <div class="stack-grid">
+                <div class="stack-chip"><i class="fab fa-react"></i>React</div>
+                <div class="stack-chip"><i class="fas fa-layer-group"></i>Redux Toolkit</div>
+                <div class="stack-chip"><i class="fab fa-node-js"></i>Node.js</div>
+                <div class="stack-chip"><i class="fas fa-code"></i>Express.js</div>
+                <div class="stack-chip"><i class="fas fa-database"></i>MongoDB</div>
+                <div class="stack-chip"><i class="fab fa-stripe-s"></i>Stripe API</div>
+                <div class="stack-chip"><i class="fas fa-user-shield"></i>Role-based Access</div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="features">
+            <div class="detail-section-head"><span class="detail-num">06</span><h2>Key Features</h2></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-utensils"></i><div><strong>Real-time menu updates</strong><p>Restaurants can update menu items and availability reflected immediately to customers.</p></div></li>
+                <li><i class="fas fa-users-cog"></i><div><strong>Three-role access system</strong><p>Customer, restaurant, and delivery agent each get a scoped view of the same order data.</p></div></li>
+                <li><i class="fab fa-stripe-s"></i><div><strong>Secure Stripe checkout</strong><p>Payment processing handled through Stripe rather than a custom implementation.</p></div></li>
+                <li><i class="fas fa-route"></i><div><strong>Order status lifecycle</strong><p>Orders move through placed, accepted, out-for-delivery, and delivered states.</p></div></li>
+            </ul>
+        </section>
+
+        <section class="detail-section" id="performance">
+            <div class="detail-section-head"><span class="detail-num">07</span><h2>Performance</h2></div>
+            <p>No formal load-testing or production traffic data exists for this project — it hasn't handled real restaurant order volume. The performance-relevant design choice is architectural: state transitions for an order are driven by backend role checks rather than frontend assumptions, so the correctness of "who can do what" doesn't degrade as usage grows, even though throughput hasn't been benchmarked.</p>
+        </section>
+
+        <section class="detail-section" id="results">
+            <div class="detail-section-head"><span class="detail-num">08</span><h2>Results</h2></div>
+            <p>The application is deployed and live (linked above) with all three user roles functional against a shared backend — a customer can place a real order, a restaurant can manage it, and a delivery agent can fulfill it, all through the same deployed system rather than three disconnected prototypes.</p>
+        </section>
+
+        <section class="detail-section" id="lessons">
+            <div class="detail-section-head"><span class="detail-num">09</span><h2>Lessons</h2></div>
+            <p>Designing for three roles from the start forced a clearer separation between "what the UI shows" and "what the API allows" — early on it would have been easy to just hide buttons in the frontend for the wrong role and call it done, but that's not real access control. Pushing the permission logic into the backend routes made the system actually secure rather than just visually tidy, which was the most transferable lesson from this build.</p>
+        </section>
+
+        <div class="detail-footer-nav">
+            <a href="index.html#projects" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+        </div>
+    </main>
+
+    <footer class="social-footer">
+        <p>© 2025 Vansh Garg | All rights reserved.</p>
+    </footer>
+
+    <script src="project.js"></script>
+</body>
+
+</html>
