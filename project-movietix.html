@@ -8,45 +8,57 @@
     <meta name="description" content="Inspection report for MovieTix — a full-stack movie ticket booking platform built with React, Node.js, Express, MongoDB, and Stripe." />
     <meta name="theme-color" content="#05070a" />
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="project-detail.css" />
 </head>
 
 <body>
+    <div class="page-sweep" id="pageSweep" aria-hidden="true"></div>
     <canvas id="particles"></canvas>
     <div class="grain-overlay"></div>
     <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+    <div class="cursor-ring"><span class="cursor-label"></span></div>
 
     <div class="detail-progress-track">
         <div class="detail-progress-fill" id="detailProgressFill"></div>
     </div>
 
-    <nav>
-        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
-        <div class="dash-links">
-            <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span></a>
-            <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span></a>
-            <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span></a>
-            <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span></a>
-            <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span></a>
-            <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span></a>
+    <nav class="floating-nav" aria-label="Primary">
+        <div class="nav-capsule">
+            <div class="logo"><span class="logo-mark">◈</span> VANSH <span class="logo-accent">GARG</span></div>
+            <div class="dash-links">
+                <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Home</span></a>
+                <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">About</span></a>
+                <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Skills</span></a>
+                <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Experience</span></a>
+                <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">Projects</span></a>
+                <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Contact</span></a>
+            </div>
+            <div class="system-status" title="All systems operational">
+                <span class="status-pulse"></span>
+                <span class="status-text">SYSTEM ONLINE</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
         </div>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </nav>
 
     <div class="mobile-menu" id="mobileMenu">
-        <a href="index.html#home" class="mobile-link">Ignition <small>Home</small></a>
-        <a href="index.html#about" class="mobile-link">Driver Profile <small>About</small></a>
-        <a href="index.html#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
-        <a href="index.html#experience" class="mobile-link">Odometer <small>Experience</small></a>
-        <a href="index.html#projects" class="mobile-link">The Garage <small>Projects</small></a>
-        <a href="index.html#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+        <a href="index.html#home" class="mobile-link">Home</a>
+        <a href="index.html#about" class="mobile-link">About</a>
+        <a href="index.html#skills" class="mobile-link">Skills</a>
+        <a href="index.html#experience" class="mobile-link">Experience</a>
+        <a href="index.html#projects" class="mobile-link">Projects</a>
+        <a href="index.html#contact" class="mobile-link">Contact</a>
+        <div class="mobile-status">
+            <span class="status-pulse"></span>
+            <span class="status-text">SYSTEM ONLINE</span>
+        </div>
     </div>
 
     <main class="detail-main">
@@ -54,7 +66,7 @@
         <!-- ===== Inspection header ===== -->
         <header class="detail-hero">
             <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
-            <div class="detail-index">PROJECT 01 · INSPECTION REPORT</div>
+            <div class="detail-index">PROJECT 03 · INSPECTION REPORT</div>
             <h1 class="detail-title">MovieTix</h1>
             <p class="detail-subtitle">A full-stack movie ticket booking platform with real-time seat selection and secure payments.</p>
             <div class="detail-quickfacts">
@@ -193,7 +205,7 @@
         <p>© 2025 Vansh Garg | All rights reserved.</p>
     </footer>
 
-    <script src="project.js"></script>
+    <script src="project.js" defer></script>
 </body>
 
 </html>

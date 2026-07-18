@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinPilot AI — Project Inspection | Vansh Garg</title>
+    <meta name="description" content="Inspection report for FinPilot AI — an AI-powered personal financial intelligence platform prototype built with Next.js, Spring Boot, FastAPI, and LangGraph." />
+    <meta name="theme-color" content="#05070a" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Barlow+Condensed:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="project-detail.css" />
+</head>
+
+<body>
+    <canvas id="particles"></canvas>
+    <div class="grain-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"><span class="cursor-label"></span></div>
+
+    <div class="detail-progress-track">
+        <div class="detail-progress-fill" id="detailProgressFill"></div>
+    </div>
+
+    <nav class="floating-nav" aria-label="Primary">
+        <div class="nav-capsule">
+            <div class="logo"><span class="logo-mark">◈</span> VANSH <span class="logo-accent">GARG</span></div>
+            <div class="dash-links">
+                <a href="index.html#home" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Home</span></a>
+                <a href="index.html#about" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">About</span></a>
+                <a href="index.html#skills" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Skills</span></a>
+                <a href="index.html#experience" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Experience</span></a>
+                <a href="index.html#projects" class="gauge-link active-link"><span class="gauge-tick"></span><span class="gauge-text">Projects</span></a>
+                <a href="index.html#contact" class="gauge-link"><span class="gauge-tick"></span><span class="gauge-text">Contact</span></a>
+            </div>
+            <div class="system-status" title="All systems operational">
+                <span class="status-pulse"></span>
+                <span class="status-text">SYSTEM ONLINE</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" class="mobile-link">Home</a>
+        <a href="index.html#about" class="mobile-link">About</a>
+        <a href="index.html#skills" class="mobile-link">Skills</a>
+        <a href="index.html#experience" class="mobile-link">Experience</a>
+        <a href="index.html#projects" class="mobile-link">Projects</a>
+        <a href="index.html#contact" class="mobile-link">Contact</a>
+        <div class="mobile-status">
+            <span class="status-pulse"></span>
+            <span class="status-text">SYSTEM ONLINE</span>
+        </div>
+    </div>
+
+    <main class="detail-main">
+
+        <header class="detail-hero">
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+            <div class="detail-index">PROJECT 02 · INSPECTION REPORT</div>
+            <h1 class="detail-title">FinPilot AI</h1>
+            <p class="detail-subtitle">An AI-powered personal financial intelligence platform aggregating accounts, cards, investments, loans, and insurance into one AI coaching layer.</p>
+            <div class="detail-quickfacts">
+                <div class="qf"><span class="qf-label">CLASS</span><span class="qf-value">AI Platform</span></div>
+                <div class="qf"><span class="qf-label">ENGINE</span><span class="qf-value">Next.js / Spring Boot 3 / FastAPI</span></div>
+                <div class="qf"><span class="qf-label">SYSTEMS</span><span class="qf-value">PostgreSQL / LangGraph / Qdrant</span></div>
+                <div class="qf"><span class="qf-label">STATUS</span><span class="qf-value status-prototype">PROTOTYPE</span></div>
+            </div>
+            <div class="detail-links">
+                <a href="https://github.com/VKGarg7/FinPilot-AI" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                <a href="https://finpilot-ai-livid.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Prototype</a>
+            </div>
+            <div class="detail-hero-placeholder">
+                <i class="fas fa-robot"></i>
+                <span>FinPilot AI</span>
+            </div>
+        </header>
+
+        <section class="detail-section" id="overview">
+            <div class="detail-section-head"><span class="detail-num">01</span><h2>Overview</h2></div>
+            <p>FinPilot AI is an early-stage personal financial intelligence platform that aggregates accounts, cards, investments, loans, and insurance into one place, then layers an AI coaching assistant on top of that aggregated view. The live link points to a <code>/prototype</code> build used for UX validation — this project is honestly scoped as scaffolding and architecture in progress, not a finished production app.</p>
+        </section>
+
+        <section class="detail-section" id="challenge">
+            <div class="detail-section-head"><span class="detail-num">02</span><h2>The Challenge</h2></div>
+            <p>The central risk in any "AI financial coach" product is hallucination: an LLM confidently stating a wrong balance, a wrong interest calculation, or made-up advice based on incomplete context is far worse than the assistant simply not answering. The system needed a way to let an LLM reason conversationally about a user's finances while guaranteeing that every number it states is pulled from a verified, deterministic calculation rather than generated by the model itself.</p>
+        </section>
+
+        <section class="detail-section" id="engineering">
+            <div class="detail-section-head"><span class="detail-num">03</span><h2>The Engineering</h2></div>
+            <p>The architecture deliberately splits responsibilities across services instead of putting everything behind one LLM call. A Java/Spring Boot 3 service owns deterministic financial computation — balances, aggregation, loan/insurance data — backed by PostgreSQL. A separate Python/FastAPI service handles the AI reasoning layer, orchestrating multi-step reasoning with LangGraph and using Qdrant for vector retrieval over financial context, with OpenAI/Gemini as the underlying model providers. The AI layer queries the deterministic layer for facts rather than inventing them, so its output is grounded in real computed data.</p>
+            <p>Infrastructure-wise, the project is set up with Docker, RabbitMQ for async messaging between services, and MinIO for object storage, with GitHub Actions scaffolded for CI — reflecting a multi-service system designed to scale past a single monolith, even though it's still early.</p>
+        </section>
+
+        <section class="detail-section" id="architecture">
+            <div class="detail-section-head"><span class="detail-num">04</span><h2>System Architecture</h2></div>
+            <p class="arch-caption">Deterministic computation and AI reasoning kept as separate services.</p>
+
+            <div class="arch-diagram" id="archDiagram">
+                <svg class="arch-lines" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                    <path class="arch-line" d="M150,60 L150,140"></path>
+                    <path class="arch-line" d="M210,170 L390,170"></path>
+                    <path class="arch-line" d="M450,170 L630,170"></path>
+                    <path class="arch-line" d="M690,170 L690,280"></path>
+                    <path class="arch-line" d="M690,280 L450,280"></path>
+                    <path class="arch-line" d="M390,280 L210,280"></path>
+                    <path class="arch-line" d="M150,280 L150,340"></path>
+                </svg>
+
+                <div class="arch-node" style="--ax: 16.7%; --ay: 9.5%;">
+                    <i class="fas fa-user"></i>
+                    <span>Client (Next.js)</span>
+                    <small>Coaching UI</small>
+                </div>
+                <div class="arch-node arch-node-hub" style="--ax: 46.7%; --ay: 40.5%;">
+                    <i class="fas fa-server"></i>
+                    <span>Spring Boot API</span>
+                    <small>Deterministic financial data</small>
+                </div>
+                <div class="arch-node" style="--ax: 76.7%; --ay: 40.5%;">
+                    <i class="fas fa-brain"></i>
+                    <span>FastAPI + LangGraph</span>
+                    <small>AI reasoning layer</small>
+                </div>
+                <div class="arch-node" style="--ax: 16.7%; --ay: 40.5%;">
+                    <i class="fas fa-database"></i>
+                    <span>PostgreSQL</span>
+                    <small>Accounts / loans / insurance</small>
+                </div>
+                <div class="arch-node" style="--ax: 16.7%; --ay: 85.7%;">
+                    <i class="fas fa-vector-square"></i>
+                    <span>Qdrant</span>
+                    <small>Vector retrieval</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="techstack">
+            <div class="detail-section-head"><span class="detail-num">05</span><h2>Tech Stack</h2></div>
+            <div class="stack-grid">
+                <div class="stack-chip"><i class="fas fa-code"></i>Next.js / TypeScript</div>
+                <div class="stack-chip"><i class="fas fa-wind"></i>Tailwind / shadcn/ui</div>
+                <div class="stack-chip"><i class="fab fa-java"></i>Java 21 / Spring Boot 3</div>
+                <div class="stack-chip"><i class="fas fa-database"></i>PostgreSQL</div>
+                <div class="stack-chip"><i class="fab fa-python"></i>Python / FastAPI</div>
+                <div class="stack-chip"><i class="fas fa-project-diagram"></i>LangGraph</div>
+                <div class="stack-chip"><i class="fas fa-vector-square"></i>Qdrant</div>
+                <div class="stack-chip"><i class="fab fa-docker"></i>Docker / RabbitMQ / MinIO</div>
+            </div>
+        </section>
+
+        <section class="detail-section" id="features">
+            <div class="detail-section-head"><span class="detail-num">06</span><h2>Key Features</h2></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-layer-group"></i><div><strong>Financial aggregation</strong><p>Accounts, cards, investments, loans, and insurance unified into one view.</p></div></li>
+                <li><i class="fas fa-robot"></i><div><strong>AI coaching layer</strong><p>Conversational assistant grounded in deterministic, non-hallucinated calculations.</p></div></li>
+                <li><i class="fas fa-sitemap"></i><div><strong>Multi-service architecture</strong><p>Computation and AI reasoning deliberately split across separate backend services.</p></div></li>
+                <li><i class="fas fa-project-diagram"></i><div><strong>LangGraph orchestration</strong><p>Multi-step reasoning over financial context rather than single-shot prompting.</p></div></li>
+            </ul>
+        </section>
+
+        <section class="detail-section" id="performance">
+            <div class="detail-section-head"><span class="detail-num">07</span><h2>Performance</h2></div>
+            <p>This project is intentionally not benchmarked yet — it's in the prototype/UX-validation stage, not production. The architectural decision that most affects future performance is the separation of deterministic computation from AI reasoning: the compute-heavy financial calculations don't need to round-trip through an LLM, which keeps the expensive AI calls scoped to reasoning rather than arithmetic.</p>
+        </section>
+
+        <section class="detail-section" id="results">
+            <div class="detail-section-head"><span class="detail-num">08</span><h2>Results</h2></div>
+            <p>A live prototype build is deployed (linked above) for UX validation of the coaching flow and financial dashboard UI. The full multi-service backend — Spring Boot, FastAPI/LangGraph, RabbitMQ, MinIO — exists as scaffolding and is still being built out; this project is presented honestly as early-stage rather than as a finished product.</p>
+        </section>
+
+        <section class="detail-section" id="lessons">
+            <div class="detail-section-head"><span class="detail-num">09</span><h2>Lessons</h2></div>
+            <p>Designing the AI/deterministic split before writing much code forced an early answer to "what can this system say for certain vs. what is it guessing" — a distinction that's easy to blur once an LLM is in the loop and hard to retrofit afterward. Scoping this project publicly as a prototype rather than overstating its completeness was also a deliberate choice, matching the same "honest about scope" approach used across the other project write-ups here.</p>
+        </section>
+
+        <div class="detail-footer-nav">
+            <a href="index.html#projects" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
+        </div>
+    </main>
+
+    <footer class="social-footer">
+        <p>© 2026 Vansh Garg | All rights reserved.</p>
+    </footer>
+
+    <script src="project.js"></script>
+</body>
+
+</html>

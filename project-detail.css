@@ -15,7 +15,7 @@ body { cursor: none; }
 .detail-progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, var(--red), var(--cyan));
+    background: linear-gradient(90deg, var(--red), var(--red));
     box-shadow: 0 0 12px var(--red);
     transition: width 0.1s linear;
 }
@@ -27,6 +27,7 @@ body { cursor: none; }
 }
 
 .back-link {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -37,7 +38,20 @@ body { cursor: none; }
     margin-bottom: 1.5rem;
     transition: color 0.25s ease;
 }
-.back-link:hover { color: var(--cyan); }
+.back-link:hover { color: var(--red-text); }
+
+/* Speed-trail underline: a short accent line races out from the left on hover */
+.back-link::after {
+    content: '';
+    position: absolute;
+    left: 22px; right: 0; bottom: -3px;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(.2,.8,.2,1);
+}
+.back-link:hover::after { transform: scaleX(1); }
 
 .detail-hero {
     text-align: left;
@@ -48,17 +62,18 @@ body { cursor: none; }
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
     letter-spacing: 2px;
-    color: var(--red);
+    color: var(--red-text);
     margin-bottom: 0.5rem;
 }
 
 .detail-title {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 2.8rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-size: 3.6rem;
     color: #fff;
     margin-bottom: 0.6rem;
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
 .detail-subtitle {
@@ -82,7 +97,7 @@ body { cursor: none; }
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.62rem;
     letter-spacing: 1.5px;
-    color: var(--cyan);
+    color: var(--red-text);
     opacity: 0.85;
 }
 .qf-value {
@@ -92,7 +107,7 @@ body { cursor: none; }
     color: #fff;
 }
 .qf-value.status-deployed {
-    color: #7cffc4;
+    color: var(--status-ok);
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -101,8 +116,102 @@ body { cursor: none; }
     content: '';
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #7cffc4;
-    box-shadow: 0 0 6px #7cffc4;
+    background: var(--status-ok);
+    box-shadow: 0 0 6px var(--status-ok);
+}
+.qf-value.status-prototype {
+    color: var(--status-proto);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.qf-value.status-prototype::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--status-proto);
+    box-shadow: 0 0 6px var(--status-proto);
+}
+
+.detail-hero-placeholder {
+    width: 100%;
+    height: 340px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--carbon-2), #0d1016);
+    color: var(--red-text);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    gap: 0.8rem;
+    flex-direction: column;
+}
+.detail-hero-placeholder i { font-size: 3.2rem; opacity: 0.8; }
+
+/* ===== Real app screenshots ===== */
+.detail-hero-shot {
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+.detail-hero-shot img { width: 100%; height: auto; display: block; }
+
+.shot-figure {
+    margin: 1.75rem 0;
+}
+.shot-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+}
+.shot-figure figcaption {
+    margin-top: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    text-align: center;
+}
+
+.shot-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.75rem 0;
+    align-items: start;
+}
+.shot-row .shot-figure { margin: 0; }
+
+/* Pairs a stacked left column (two shorter shots) against one taller shot on
+   the right, so mismatched image heights don't leave a stretched empty gap. */
+.shot-row-uneven .shot-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.shot-row-uneven .shot-figure-tall img {
+    max-height: 480px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0 auto;
+}
+.shot-row-uneven .shot-figure-tall {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media screen and (max-width: 700px) {
+    .shot-row { grid-template-columns: 1fr; }
 }
 
 .detail-links {
@@ -111,16 +220,27 @@ body { cursor: none; }
     margin-bottom: 2rem;
 }
 
+.img-mask-wrap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 55px rgba(0,0,0,0.45);
+}
+
 .detail-hero-img {
     width: 100%;
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 20px 55px rgba(0,0,0,0.45);
     display: block;
 }
 
-/* ===== Detail sections ===== */
+/* ===== Detail sections =====
+   Override the global `section { min-height: 100vh; ... }` rule from style.css,
+   which otherwise forces every project-detail section to fill the viewport
+   and vertically center its (much shorter) content, producing huge gaps. */
 .detail-section {
+    min-height: 0;
+    display: block;
     padding: 3rem 0;
     border-top: 1px dashed rgba(255,255,255,0.08);
     text-align: left;
@@ -141,13 +261,25 @@ body { cursor: none; }
     margin-bottom: 1.1rem;
 }
 .detail-num {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
-    color: var(--red);
+    color: var(--red-text);
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px) scale(0.7);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.2,.8,.2,1);
+}
+.detail-num.num-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-num { transition: none !important; opacity: 1 !important; transform: none !important; }
 }
 .detail-section-head h2 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     color: #fff;
@@ -191,7 +323,7 @@ body { cursor: none; }
     stroke-dashoffset: 0;
 }
 .arch-diagram.arch-active .arch-line {
-    stroke: rgba(0,255,247,0.5);
+    stroke: rgba(216, 31, 55,0.5);
     animation: archFlow 2.4s linear infinite;
 }
 @keyframes archFlow {
@@ -206,7 +338,7 @@ body { cursor: none; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 130px;
+    width: 160px;
     text-align: center;
     z-index: 2;
 }
@@ -214,24 +346,25 @@ body { cursor: none; }
     width: 44px; height: 44px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, var(--carbon-3), var(--carbon-0) 75%);
-    border: 2px solid rgba(0,255,247,0.35);
+    border: 2px solid rgba(216, 31, 55,0.35);
     display: flex; align-items: center; justify-content: center;
-    color: var(--cyan);
+    color: var(--red-text);
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
     transition: transform 0.25s ease, border-color 0.25s ease;
 }
-.arch-node-hub i { border-color: rgba(255,39,69,0.4); color: var(--red); }
+.arch-node-hub i { border-color: rgba(216, 31, 55,0.4); color: var(--red-text); }
 .arch-node:hover i { transform: scale(1.12); border-color: var(--red); }
 .arch-node span {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 0.68rem;
     font-weight: 700;
     color: #fff;
 }
 .arch-node small {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
+    font-size: 0.56rem;
+    line-height: 1.3;
     color: var(--text-dim);
     margin-top: 2px;
 }
@@ -263,14 +396,14 @@ body { cursor: none; }
     align-items: center;
     gap: 8px;
     background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(0,255,247,0.25);
+    border: 1px solid rgba(216, 31, 55,0.25);
     border-radius: 10px;
     padding: 0.6rem 1rem;
     font-size: 0.85rem;
     color: var(--text-body);
     transition: border-color 0.25s ease, transform 0.25s ease;
 }
-.stack-chip i { color: var(--cyan); font-size: 1.1rem; }
+.stack-chip i { color: var(--red-text); font-size: 1.1rem; }
 .stack-chip:hover { border-color: var(--red); transform: translateY(-2px); }
 
 /* ===== Key features list ===== */
@@ -288,10 +421,10 @@ body { cursor: none; }
 .feature-list i {
     width: 38px; height: 38px;
     border-radius: 10px;
-    background: rgba(255,39,69,0.08);
-    border: 1px solid rgba(255,39,69,0.25);
+    background: rgba(216, 31, 55,0.08);
+    border: 1px solid rgba(216, 31, 55,0.25);
     display: flex; align-items: center; justify-content: center;
-    color: var(--red);
+    color: var(--red-text);
     flex-shrink: 0;
     font-size: 0.95rem;
 }
