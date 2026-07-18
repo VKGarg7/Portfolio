@@ -98,9 +98,12 @@ function playBootChecklist() {
 
 // Scroll Reveal
 const sections = document.querySelectorAll('section');
+// threshold: 0 + negative bottom rootMargin instead of a ratio threshold — tall
+// sections (e.g. Projects) can never reach 20% visibility at once, which left
+// them stuck at opacity 0.
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.2 });
+}, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
 sections.forEach(section => observer.observe(section));
 
 // Particles Background
@@ -342,7 +345,11 @@ const navObserver = new IntersectionObserver(entries => {
             moveNavIndicator(link);
         }
     });
-}, { threshold: 0.4 });
+    // Observation zone is squeezed to the viewport's vertical center line
+    // (via rootMargin) so even multi-screen-tall sections like Projects
+    // activate their nav link; a ratio threshold (e.g. 0.4) can never be
+    // reached by a section taller than ~2.5 viewports.
+}, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
 sections.forEach(s => navObserver.observe(s));
 
 window.addEventListener('resize', () => {
