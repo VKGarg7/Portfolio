@@ -7,7 +7,9 @@ if (canvas) {
     let particles = [];
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    for (let i = 0; i < 70; i++) {
+    const isSmallOrTouch = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
+    const PARTICLE_COUNT = isSmallOrTouch ? 20 : 70;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
         particles.push({
             x: Math.random() * canvas.width, y: Math.random() * canvas.height,
             r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.5, dy: (Math.random() - 0.5) * 0.5
@@ -18,7 +20,7 @@ if (canvas) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(p => {
             ctx.beginPath();
-            ctx.fillStyle = Math.random() > 0.5 ? '#ff2745' : '#00fff7';
+            ctx.fillStyle = '#d81f37';
             ctx.globalAlpha = 0.6;
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
             if (!prefersReducedMotion) {
@@ -67,41 +69,111 @@ if (cursorDot && cursorRing && !prefersReducedMotion) {
         el.addEventListener('mouseenter', () => cursorRing.classList.add('hovered'));
         el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovered'));
     });
+
+    // Cursor state morphing: VIEW over project imagery/diagram nodes, OPEN over external links
+    const cursorLabel = cursorRing.querySelector('.cursor-label');
+    function setCursorState(state) {
+        cursorRing.classList.remove('state-view', 'state-open');
+        if (cursorLabel) cursorLabel.textContent = '';
+        if (state) {
+            cursorRing.classList.add(`state-${state}`);
+            if (cursorLabel) cursorLabel.textContent = state.toUpperCase();
+        }
+    }
+    document.querySelectorAll('.detail-hero-img, .arch-node').forEach(el => {
+        el.addEventListener('mouseenter', () => setCursorState('view'));
+        el.addEventListener('mouseleave', () => setCursorState(null));
+    });
+    document.querySelectorAll('a[target="_blank"]').forEach(el => {
+        el.addEventListener('mouseenter', () => setCursorState('open'));
+        el.addEventListener('mouseleave', () => setCursorState(null));
+    });
 }
 
 // Mobile hamburger menu
 const navToggle = document.getElementById('navToggle');
 const mobileMenu = document.getElementById('mobileMenu');
+function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+}
 if (navToggle && mobileMenu) {
     navToggle.addEventListener('click', () => {
         const isOpen = mobileMenu.classList.toggle('open');
         navToggle.classList.toggle('open', isOpen);
         navToggle.setAttribute('aria-expanded', String(isOpen));
+        if (isOpen) {
+            const firstLink = mobileMenu.querySelector('.mobile-link');
+            if (firstLink) firstLink.focus();
+        } else {
+            navToggle.focus();
+        }
     });
     mobileMenu.querySelectorAll('.mobile-link').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('open');
-            navToggle.classList.remove('open');
-            navToggle.setAttribute('aria-expanded', 'false');
-        });
+        link.addEventListener('click', closeMobileMenu);
+    });
+    mobileMenu.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        closeMobileMenu();
+        navToggle.focus();
     });
 }
 
-// Scroll reveal for detail sections
+// Scroll reveal for detail sections + section-number entrance animation
 const revealTargets = document.querySelectorAll('.detail-section');
 if (revealTargets.length) {
     const revealObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                const num = entry.target.querySelector('.detail-num');
+                if (num) num.classList.add('num-visible');
+            }
+        });
     }, { threshold: 0.15 });
     revealTargets.forEach(el => revealObserver.observe(el));
 }
 
-// Architecture diagram: light pulse traveling along connector lines on scroll into view
+// Image reveal mask on the hero screenshot
+const heroImg = document.querySelector('.detail-hero-img');
+if (heroImg && !heroImg.parentElement.classList.contains('img-mask-wrap')) {
+    const wrap = document.createElement('div');
+    wrap.className = 'img-mask-wrap';
+    heroImg.parentNode.insertBefore(wrap, heroImg);
+    wrap.appendChild(heroImg);
+    const mask = document.createElement('div');
+    mask.className = 'img-mask';
+    wrap.appendChild(mask);
+
+    const heroMaskObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                mask.classList.add('mask-open');
+                heroMaskObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+    heroMaskObserver.observe(wrap);
+}
+
+// Architecture diagram: lines draw in first, then a light pulse flows along them
 const archDiagram = document.getElementById('archDiagram');
 if (archDiagram) {
+    const archLines = archDiagram.querySelectorAll('.arch-line');
+    archLines.forEach(line => {
+        const length = line.getTotalLength ? line.getTotalLength() : 300;
+        line.style.setProperty('--ld-length', length);
+        if (!prefersReducedMotion) line.classList.add('line-draw');
+    });
+
     const archObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) archDiagram.classList.add('arch-active');
+            if (!entry.isIntersecting) return;
+            archLines.forEach(line => line.classList.add('line-drawn'));
+            const flowDelay = prefersReducedMotion ? 0 : 700;
+            setTimeout(() => archDiagram.classList.add('arch-active'), flowDelay);
+            archObserver.unobserve(entry.target);
         });
     }, { threshold: 0.3 });
     archObserver.observe(archDiagram);
@@ -118,4 +190,45 @@ if (detailProgressFill) {
     }
     window.addEventListener('scroll', updateDetailProgress);
     updateDetailProgress();
+}
+
+// ===== Page transitions: horizontal light sweep between internal pages =====
+const pageSweep = document.getElementById('pageSweep');
+
+if (pageSweep) {
+    // Entrance sweep: plays briefly as each new page settles in
+    if (!prefersReducedMotion) {
+        requestAnimationFrame(() => {
+            pageSweep.classList.add('sweep-enter');
+            pageSweep.addEventListener('animationend', () => {
+                pageSweep.classList.remove('sweep-enter');
+            }, { once: true });
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        if (prefersReducedMotion) return;
+
+        const link = e.target.closest('a[href]');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+        if (link.target === '_blank' || link.hasAttribute('download')) return;
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let modifier-clicks / new-tab behave natively
+
+        let url;
+        try { url = new URL(href, window.location.href); } catch { return; }
+        if (url.origin !== window.location.origin) return; // external links navigate immediately, no sweep
+
+        // Anchor links to a section on the SAME page (e.g. index.html#projects from index.html) shouldn't sweep
+        const isSamePageAnchor = url.pathname === window.location.pathname && url.hash;
+        if (isSamePageAnchor) return;
+
+        e.preventDefault();
+        pageSweep.classList.remove('sweep-enter');
+        pageSweep.classList.add('sweep-exit');
+        const NAV_DELAY = 380; // stays within the 300-700ms window without stalling navigation
+        setTimeout(() => { window.location.href = href; }, NAV_DELAY);
+    });
 }
