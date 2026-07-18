@@ -12,20 +12,83 @@
     <meta property="og:image" content="./Images/Untitled design.png" />
     <meta name="theme-color" content="#05070a" />
 
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;800&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap"
-        rel="stylesheet">
+    <!-- Preconnect to third-party origins used below, so the DNS/TLS handshake overlaps with HTML parsing -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
-    <!-- Font Awesome -->
+    <!-- Google Fonts (self-hosted locally, latin subset only) -->
+    <link rel="stylesheet" href="fonts/fonts.css">
+
+    <!-- Font Awesome: loaded non-render-blocking (icons appear slightly after first paint instead of delaying it) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
+    <!-- Critical above-the-fold CSS, inlined so first paint doesn't wait on the full stylesheet -->
+    <style>* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+    --carbon-0: #050505;
+    --carbon-1: #080808;
+    --carbon-2: #111111;
+    --carbon-3: #151515;
+    --red: #d81f37;
+    --red-dim: #6e1220;
+    --red-soft: rgba(216, 31, 55, 0.35);
+    --text-dim: #8a8a8a;
+    --text-body: #f5f5f5;
+    --border-soft: rgba(255,255,255,0.08);
+}
+html { background: var(--carbon-0); }
+body {
+    font-family: 'Poppins', sans-serif;
+    background:
+        radial-gradient(ellipse 900px 500px at 15% -10%, rgba(216, 31, 55,0.12), transparent 60%),
+        radial-gradient(ellipse 900px 600px at 85% 10%, rgba(216, 31, 55,0.08), transparent 55%),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 6px),
+        linear-gradient(160deg, var(--carbon-0), var(--carbon-1) 40%, var(--carbon-2));
+    color: #fff;
+    overflow-x: hidden;
+}
+body.boot-pending { overflow: hidden; height: 100vh; }
+.boot-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: radial-gradient(ellipse 1200px 700px at 50% 40%, rgba(216, 31, 55,0.08), transparent 60%),
+                var(--carbon-0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.boot-panel {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 2rem;
+    width: min(90vw, 480px);
+}
+.boot-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 5px;
+    color: var(--red);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+</style>
 
     <!-- External CSS -->
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="boot-pending">
+
+    <!-- ============ PAGE TRANSITION SWEEP ============ -->
+    <div class="page-sweep" id="pageSweep" aria-hidden="true"></div>
 
     <!-- ============ BOOT / IGNITION SEQUENCE ============ -->
     <div id="bootScreen" class="boot-screen">
@@ -61,7 +124,7 @@
     <canvas id="particles"></canvas>
     <div class="grain-overlay"></div>
     <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+    <div class="cursor-ring"><span class="cursor-label"></span></div>
 
     <!-- Lap progress bar -->
     <div class="lap-track">
@@ -86,42 +149,55 @@
         <div class="rpm-bar-fill" id="rpmBarFill"></div>
     </div>
 
-    <nav>
-        <div class="logo"><span class="logo-mark">◈</span> VANSH<span class="logo-accent">.GARG</span></div>
+    <nav class="floating-nav" aria-label="Primary">
+        <div class="nav-capsule">
+            <div class="logo"><span class="logo-mark">◈</span> VANSH <span class="logo-accent">GARG</span></div>
 
-        <div class="dash-links">
-            <a href="#home" class="gauge-link">
-                <span class="gauge-tick"></span><span class="gauge-text">IGNITION</span><span class="gauge-sub">Home</span>
-            </a>
-            <a href="#about" class="gauge-link">
-                <span class="gauge-tick"></span><span class="gauge-text">DRIVER&nbsp;PROFILE</span><span class="gauge-sub">About</span>
-            </a>
-            <a href="#skills" class="gauge-link">
-                <span class="gauge-tick"></span><span class="gauge-text">PERFORMANCE</span><span class="gauge-sub">Skills</span>
-            </a>
-            <a href="#experience" class="gauge-link">
-                <span class="gauge-tick"></span><span class="gauge-text">ODOMETER</span><span class="gauge-sub">Experience</span>
-            </a>
-            <a href="#projects" class="gauge-link">
-                <span class="gauge-tick"></span><span class="gauge-text">THE&nbsp;GARAGE</span><span class="gauge-sub">Projects</span>
-            </a>
-            <a href="#contact" class="gauge-link">
-                <span class="gauge-tick"></span><span class="gauge-text">PIT&nbsp;LANE</span><span class="gauge-sub">Contact</span>
-            </a>
+            <div class="dash-links" id="dashLinks">
+                <span class="nav-indicator" id="navIndicator"></span>
+                <a href="#home" class="gauge-link">
+                    <span class="gauge-tick"></span><span class="gauge-text">Home</span>
+                </a>
+                <a href="#about" class="gauge-link">
+                    <span class="gauge-tick"></span><span class="gauge-text">About</span>
+                </a>
+                <a href="#skills" class="gauge-link">
+                    <span class="gauge-tick"></span><span class="gauge-text">Skills</span>
+                </a>
+                <a href="#experience" class="gauge-link">
+                    <span class="gauge-tick"></span><span class="gauge-text">Experience</span>
+                </a>
+                <a href="#projects" class="gauge-link">
+                    <span class="gauge-tick"></span><span class="gauge-text">Projects</span>
+                </a>
+                <a href="#contact" class="gauge-link">
+                    <span class="gauge-tick"></span><span class="gauge-text">Contact</span>
+                </a>
+            </div>
+
+            <div class="system-status" title="All systems operational">
+                <span class="status-pulse"></span>
+                <span class="status-text">SYSTEM ONLINE</span>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
         </div>
-
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </nav>
 
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#home" class="mobile-link">Ignition <small>Home</small></a>
-        <a href="#about" class="mobile-link">Driver Profile <small>About</small></a>
-        <a href="#skills" class="mobile-link">Performance Systems <small>Skills</small></a>
-        <a href="#experience" class="mobile-link">Odometer <small>Experience</small></a>
-        <a href="#projects" class="mobile-link">The Garage <small>Projects</small></a>
-        <a href="#contact" class="mobile-link">Pit Lane <small>Contact</small></a>
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#skills" class="mobile-link">Skills</a>
+        <a href="#experience" class="mobile-link">Experience</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+        <div class="mobile-status">
+            <span class="status-pulse"></span>
+            <span class="status-text">SYSTEM ONLINE</span>
+        </div>
     </div>
 
+    <main>
     <!-- ============ HERO / IGNITION ============ -->
     <section id="home" class="hero">
         <div class="cockpit-grid" aria-hidden="true"></div>
@@ -145,7 +221,7 @@
                     <h1 class="cockpit-name stagger-item" data-stagger="2">Vansh Kumar Garg</h1>
 
                     <p class="cockpit-role stagger-item" data-stagger="3">Software Engineer</p>
-                    <p class="cockpit-tagline stagger-item" data-stagger="4">Building high-performance digital experiences</p>
+                    <p class="cockpit-tagline stagger-item" data-stagger="4">Backend-focused engineer building production APIs and full-stack systems with FastAPI, PostgreSQL &amp; React</p>
 
                     <div class="role-indicator stagger-item" data-stagger="5">
                         <span class="role-caret">&gt;</span>
@@ -153,8 +229,21 @@
                     </div>
 
                     <div class="buttons stagger-item" data-stagger="6">
-                        <a href="#projects" class="btn white">Explore my Work</a>
-                        <a href="#contact" class="btn gradient">👋 Let's Connect</a>
+                        <a href="#projects" class="btn white magnetic">Explore my Work</a>
+                        <a href="#contact" class="btn gradient magnetic">👋 Let's Connect</a>
+                        <a href="./Images/Vansh_Kumar_Garg_Resume.pdf" target="_blank" class="btn outline magnetic">📄 Resume</a>
+                    </div>
+
+                    <div class="tech-strip stagger-item" data-stagger="6">
+                        <span class="tech-strip-label">STACK</span>
+                        <span class="tech-chip">Python</span>
+                        <span class="tech-chip">FastAPI</span>
+                        <span class="tech-chip">Java · Spring Boot</span>
+                        <span class="tech-chip">Node.js · Express</span>
+                        <span class="tech-chip">React · Next.js</span>
+                        <span class="tech-chip">PostgreSQL</span>
+                        <span class="tech-chip">MongoDB</span>
+                        <span class="tech-chip">Docker</span>
                     </div>
 
                     <div class="hero-gauges stagger-item" data-stagger="7">
@@ -163,14 +252,14 @@
                                 <circle class="gauge-track" cx="60" cy="60" r="52"></circle>
                                 <circle class="gauge-progress" cx="60" cy="60" r="52"></circle>
                             </svg>
-                            <div class="gauge-label"><span class="gauge-value">7.2K</span><small>RPM<br>YEARS CODING</small></div>
+                            <div class="gauge-label"><span class="gauge-value">15+</span><small>RPM<br>APIS SHIPPED</small></div>
                         </div>
                         <div class="mini-gauge" id="gauge-speed">
                             <svg viewBox="0 0 120 120">
                                 <circle class="gauge-track" cx="60" cy="60" r="52"></circle>
                                 <circle class="gauge-progress" cx="60" cy="60" r="52"></circle>
                             </svg>
-                            <div class="gauge-label"><span class="gauge-value">600+</span><small>KMH<br>LEETCODE SOLVED</small></div>
+                            <div class="gauge-label"><span class="gauge-value">800+</span><small>KMH<br>PROBLEMS SOLVED</small></div>
                         </div>
                         <div class="mini-gauge" id="gauge-fuel">
                             <svg viewBox="0 0 120 120">
@@ -202,8 +291,8 @@
                     <svg id="centerpiece" class="centerpiece-svg" viewBox="0 0 500 500">
                         <defs>
                             <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#ff2745" stop-opacity="0.55"/>
-                                <stop offset="100%" stop-color="#ff2745" stop-opacity="0"/>
+                                <stop offset="0%" stop-color="#d81f37" stop-opacity="0.55"/>
+                                <stop offset="100%" stop-color="#d81f37" stop-opacity="0"/>
                             </radialGradient>
                         </defs>
 
@@ -224,12 +313,23 @@
 
                         <circle cx="250" cy="250" r="140" fill="url(#hubGlow)"></circle>
                         <circle cx="250" cy="250" r="46" class="cp-hub"></circle>
-                        <text x="250" y="243" class="cp-hub-text">VKG</text>
-                        <text x="250" y="262" class="cp-hub-sub">CORE</text>
+                        <text x="250" y="243" class="cp-hub-text" id="cpHubText">VKG</text>
+                        <text x="250" y="262" class="cp-hub-sub" id="cpHubSub">CORE</text>
                     </svg>
                 </div>
             </div>
+
+            <a href="#about" class="scroll-cue" aria-label="Scroll to explore">
+                <span class="scroll-cue-text">SCROLL</span>
+                <span class="scroll-cue-line"></span>
+            </a>
         </div>
+    </section>
+
+    <!-- ============ STATEMENT ============ -->
+    <section class="statement-band">
+        <p class="statement-line">CODE IS MY ENGINE.</p>
+        <p class="statement-line accent">CURIOSITY IS MY FUEL.</p>
     </section>
 
     <!-- ============ ABOUT / DRIVER PROFILE ============ -->
@@ -238,7 +338,7 @@
             <path class="ecg-path" d="M0,60 L120,60 L145,60 L160,15 L180,105 L200,60 L230,60 L340,60 L365,60 L380,20 L400,100 L420,60 L450,60 L560,60 L585,60 L600,15 L620,105 L640,60 L670,60 L780,60 L805,60 L820,20 L840,100 L860,60 L890,60 L1000,60"></path>
         </svg>
 
-        <h1 class="section-subtitle">SECTOR 02 &middot; ABOUT</h1>
+        <p class="section-subtitle">SECTOR 02 &middot; ABOUT</p>
         <h2 class="section-title">Driver Profile</h2>
 
         <div class="profile-grid">
@@ -256,75 +356,73 @@
                 </div>
 
                 <p class="profile-lede">
-                    I'm <span class="highlight">Vansh</span> — a backend-focused Software Engineer who likes
-                    taking systems apart to understand how they really work, whether it's a REST API,
-                    a database query plan, or an engine.
+                    I'm <span class="highlight">Vansh</span> — a Software Engineer with production experience
+                    building REST APIs and relational data systems on a live commercial ATS platform,
+                    who likes taking systems apart to understand how they really work.
                 </p>
                 <p class="profile-lede secondary">
                     I care about writing code that's fast, reliable, and easy for the next person to
                     reason about — the same qualities I look for in anything mechanical.
                 </p>
+
+                <div class="spec-stats spec-stats-intro">
+                    <div class="spec-stat"><span class="spec-num">800+</span><span class="spec-unit">LeetCode + GFG Solved</span></div>
+                    <div class="spec-stat"><span class="spec-num">15+</span><span class="spec-unit">Production APIs Shipped</span></div>
+                    <div class="spec-stat"><span class="spec-num">6</span><span class="spec-unit">Full-Stack Builds</span></div>
+                    <div class="spec-stat"><span class="spec-num">100%</span><span class="spec-unit">Deployed &amp; Live</span></div>
+                </div>
             </div>
 
             <!-- Right: metadata + narrative -->
             <div class="profile-meta">
-                <div class="meta-row">
-                    <span class="meta-label">DRIVER ID</span>
-                    <span class="meta-value">VANSH</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">CLASS</span>
-                    <span class="meta-value">SOFTWARE ENGINEER</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">SPECIALIZATION</span>
-                    <span class="meta-value">FULL-STACK / BACKEND</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">LOCATION</span>
-                    <span class="meta-value">Punjab, India</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">EXPERIENCE</span>
-                    <span class="meta-value">Web Developer Intern @ EllocentLabs</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">CURRENT FOCUS</span>
-                    <span class="meta-value">FastAPI · PostgreSQL · System Design</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">PASSION</span>
-                    <span class="meta-value">CODE / CARS / BIKES</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">TECHNOLOGIES</span>
-                    <span class="meta-value">React · Node.js · FastAPI · PostgreSQL · MongoDB</span>
+                <div class="meta-panel">
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-id-badge"></i>DRIVER ID</span>
+                        <span class="meta-value">VANSH</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-user-gear"></i>CLASS</span>
+                        <span class="meta-value">SOFTWARE ENGINEER</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-layer-group"></i>SPECIALIZATION</span>
+                        <span class="meta-value">FULL-STACK / BACKEND</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-location-dot"></i>LOCATION</span>
+                        <span class="meta-value">Punjab, India</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-briefcase"></i>EXPERIENCE</span>
+                        <span class="meta-value">Software Developer Intern @ EllocentLabs</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-crosshairs"></i>CURRENT FOCUS</span>
+                        <span class="meta-value">FastAPI · PostgreSQL · System Design</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label"><i class="fas fa-heart"></i>PASSION</span>
+                        <span class="meta-value">CODE / CARS / BIKES</span>
+                    </div>
                 </div>
 
                 <p class="section-desc profile-detail">
-                    I’m a backend-focused <span class="highlight">Software Engineer</span> who enjoys building <span class="highlight">scalable</span> APIs, <span class="highlight">database-driven</span> systems,
-                    and reliable web applications. My experience includes working with <span class="highlight">FastAPI</span>, <span class="highlight">Node.js</span>, <span class="highlight">PostgreSQL</span>,
-                    and <span class="highlight">MongoDB</span> to develop <span class="highlight">secure</span> and <span class="highlight">efficient</span> backend workflows. I’ve built projects involving
-                    <span class="highlight">real-time seat booking</span>, <span class="highlight">payment integration</span>, <span class="highlight">authentication systems</span>, and <span class="highlight">concurrency handling</span>,
-                    which helped me understand how backend architecture directly impacts <span class="highlight">user experience</span> and <span class="highlight">system performance</span>.
-                    Currently pursuing <span class="highlight">Computer Science and Business Systems</span> at <span class="highlight">Thapar Institute of Engineering and Technology</span>, I actively strengthen my problem-solving skills
-                    through <span class="highlight">DSA practice</span>, with <span class="highlight">600+ LeetCode problems solved</span>. I enjoy debugging <span class="highlight">complex issues</span>, optimizing system performance, and
-                    continuously learning modern backend technologies to build <span class="highlight">scalable</span> digital products.
+                    I'm a Software Engineer with production experience building REST APIs and relational data systems
+                    in Python (FastAPI) and SQL (PostgreSQL) — including async processing, schema design, and auth flows on a live commercial
+                    ATS platform at <span class="highlight">EllocentLabs</span>. I also work with Java/Spring Boot and full-stack development, and I'm comfortable owning
+                    projects end-to-end across Agile sprint cycles. I've built projects involving real-time seat booking,
+                    payment integration, role-based authentication, and AI-assisted systems, which helped me understand
+                    how backend architecture directly impacts user experience and system performance.
+                    Currently pursuing <span class="highlight">Computer Science and Business Systems</span> at Thapar Institute of Engineering and Technology (CGPA 8.07),
+                    I actively strengthen my problem-solving skills through DSA practice, with <span class="highlight">800+ problems solved</span> across LeetCode and GeeksforGeeks.
                 </p>
-
-                <div class="spec-stats">
-                    <div class="spec-stat"><span class="spec-num">600+</span><span class="spec-unit">LeetCode Solved</span></div>
-                    <div class="spec-stat"><span class="spec-num">4+</span><span class="spec-unit">Production Builds</span></div>
-                    <div class="spec-stat"><span class="spec-num">2</span><span class="spec-unit">Core Stacks (MERN / FastAPI)</span></div>
-                    <div class="spec-stat"><span class="spec-num">100%</span><span class="spec-unit">Deployed &amp; Live</span></div>
-                </div>
             </div>
         </div>
     </section>
 
     <!-- ============ SKILLS / PERFORMANCE SYSTEMS ============ -->
     <section id="skills" class="about-section skills-systems">
-        <h1 class="section-subtitle">SECTOR 03 &middot; SKILLS</h1>
+        <p class="section-subtitle">SECTOR 03 &middot; SKILLS</p>
         <h2 class="section-title">Performance Systems</h2>
         <p class="garage-caption">Five interconnected systems that power every build in the garage. Hover a module to inspect it.</p>
 
@@ -340,37 +438,40 @@
             </svg>
 
             <!-- ENGINE -->
-            <div class="sys-module" id="mod-engine" data-module="engine" style="--mx: 50%; --my: 8%;">
+            <div class="sys-module" id="mod-engine" data-module="engine" style="--mx: 50%; --my: 8%;" tabindex="0" role="button" aria-expanded="false" aria-controls="panel-engine">
                 <div class="sys-icon"><i class="fas fa-cog"></i></div>
                 <div class="sys-name">ENGINE</div>
                 <div class="sys-sub">Core Programming</div>
-                <div class="sys-panel">
-                    <div class="sys-panel-row"><span>JavaScript</span><span class="sys-level primary">Primary</span></div>
+                <div class="sys-panel" id="panel-engine">
                     <div class="sys-panel-row"><span>Python</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-panel-row"><span>SQL</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-panel-row"><span>Java</span><span class="sys-level primary">Primary</span></div>
+                    <div class="sys-panel-row"><span>JavaScript / TypeScript</span><span class="sys-level primary">Primary</span></div>
                     <div class="sys-panel-row"><span>C++</span><span class="sys-level working">Working Knowledge</span></div>
-                    <div class="sys-telemetry"><span class="tele-label">THROUGHPUT</span><span class="tele-value" data-target="600">0</span><span class="tele-unit">DSA problems solved</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">THROUGHPUT</span><span class="tele-value" data-target="800">0</span><span class="tele-unit">DSA problems solved</span></div>
                 </div>
             </div>
 
             <!-- TRANSMISSION -->
-            <div class="sys-module" id="mod-transmission" data-module="transmission" style="--mx: 12%; --my: 50%;">
+            <div class="sys-module" id="mod-transmission" data-module="transmission" style="--mx: 12%; --my: 50%;" tabindex="0" role="button" aria-expanded="false" aria-controls="panel-transmission">
                 <div class="sys-icon"><i class="fas fa-server"></i></div>
                 <div class="sys-name">TRANSMISSION</div>
                 <div class="sys-sub">Backend Systems</div>
-                <div class="sys-panel">
+                <div class="sys-panel" id="panel-transmission">
+                    <div class="sys-panel-row"><span>FastAPI / Python</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>Spring Boot 3 / Spring Security</span><span class="sys-level production">Production Experience</span></div>
                     <div class="sys-panel-row"><span>Node.js / Express.js</span><span class="sys-level production">Production Experience</span></div>
-                    <div class="sys-panel-row"><span>FastAPI</span><span class="sys-level production">Production Experience</span></div>
-                    <div class="sys-panel-row"><span>REST APIs / JWT</span><span class="sys-level production">Production Experience</span></div>
-                    <div class="sys-telemetry"><span class="tele-label">LOAD</span><span class="tele-value" data-target="4">0</span><span class="tele-unit">production builds shipped</span></div>
+                    <div class="sys-panel-row"><span>REST APIs / JWT / Microservices</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">LOAD</span><span class="tele-value" data-target="15">0</span><span class="tele-unit">production APIs shipped</span></div>
                 </div>
             </div>
 
             <!-- CONTROL UNIT -->
-            <div class="sys-module" id="mod-control" data-module="control" style="--mx: 88%; --my: 50%;">
+            <div class="sys-module" id="mod-control" data-module="control" style="--mx: 88%; --my: 50%;" tabindex="0" role="button" aria-expanded="false" aria-controls="panel-control">
                 <div class="sys-icon"><i class="fas fa-microchip"></i></div>
                 <div class="sys-name">CONTROL UNIT</div>
                 <div class="sys-sub">Frontend</div>
-                <div class="sys-panel">
+                <div class="sys-panel" id="panel-control">
                     <div class="sys-panel-row"><span>React / Next.js</span><span class="sys-level production">Production Experience</span></div>
                     <div class="sys-panel-row"><span>Tailwind CSS</span><span class="sys-level production">Production Experience</span></div>
                     <div class="sys-panel-row"><span>HTML / CSS</span><span class="sys-level primary">Primary</span></div>
@@ -379,25 +480,27 @@
             </div>
 
             <!-- TELEMETRY -->
-            <div class="sys-module" id="mod-telemetry" data-module="telemetry" style="--mx: 50%; --my: 88%;">
+            <div class="sys-module" id="mod-telemetry" data-module="telemetry" style="--mx: 50%; --my: 88%;" tabindex="0" role="button" aria-expanded="false" aria-controls="panel-telemetry">
                 <div class="sys-icon"><i class="fas fa-database"></i></div>
                 <div class="sys-name">TELEMETRY</div>
                 <div class="sys-sub">Databases</div>
-                <div class="sys-panel">
+                <div class="sys-panel" id="panel-telemetry">
                     <div class="sys-panel-row"><span>PostgreSQL</span><span class="sys-level production">Production Experience</span></div>
+                    <div class="sys-panel-row"><span>MySQL</span><span class="sys-level experienced">Experienced</span></div>
                     <div class="sys-panel-row"><span>MongoDB</span><span class="sys-level production">Production Experience</span></div>
-                    <div class="sys-panel-row"><span>Schema Migrations (Alembic)</span><span class="sys-level experienced">Experienced</span></div>
-                    <div class="sys-telemetry"><span class="tele-label">QUERIES</span><span class="tele-value" data-target="2">0</span><span class="tele-unit">core database engines</span></div>
+                    <div class="sys-panel-row"><span>Schema Design / Normalization / Indexing</span><span class="sys-level experienced">Experienced</span></div>
+                    <div class="sys-telemetry"><span class="tele-label">QUERIES</span><span class="tele-value" data-target="3">0</span><span class="tele-unit">core database engines</span></div>
                 </div>
             </div>
 
             <!-- TOOLKIT -->
-            <div class="sys-module sys-module-hub" id="mod-toolkit" data-module="toolkit" style="--mx: 50%; --my: 50%;">
+            <div class="sys-module sys-module-hub" id="mod-toolkit" data-module="toolkit" style="--mx: 50%; --my: 50%;" tabindex="0" role="button" aria-expanded="false" aria-controls="panel-toolkit">
                 <div class="sys-icon"><i class="fas fa-toolbox"></i></div>
                 <div class="sys-name">TOOLKIT</div>
                 <div class="sys-sub">Developer Tools</div>
-                <div class="sys-panel">
-                    <div class="sys-panel-row"><span>Postman</span><span class="sys-level experienced">Experienced</span></div>
+                <div class="sys-panel" id="panel-toolkit">
+                    <div class="sys-panel-row"><span>Docker / GitHub Actions (CI)</span><span class="sys-level experienced">Experienced</span></div>
+                    <div class="sys-panel-row"><span>Postman / Swagger / OpenAPI</span><span class="sys-level experienced">Experienced</span></div>
                     <div class="sys-panel-row"><span>Stripe API</span><span class="sys-level experienced">Experienced</span></div>
                     <div class="sys-panel-row"><span>Git</span><span class="sys-level primary">Primary</span></div>
                     <div class="sys-telemetry"><span class="tele-label">UPTIME</span><span class="tele-value" data-target="100">0</span><span class="tele-unit">% deployed &amp; live</span></div>
@@ -415,7 +518,7 @@
 
     <!-- ============ EXPERIENCE / ODOMETER ============ -->
     <section id="experience" class="experience-section about-section">
-        <h1 class="section-subtitle">SECTOR 04 &middot; EXPERIENCE</h1>
+        <p class="section-subtitle">SECTOR 04 &middot; EXPERIENCE</p>
         <h2 class="section-title">Odometer — The Journey So Far</h2>
 
         <div class="route-track" id="routeTrack">
@@ -435,21 +538,32 @@
                     </div>
                     <div class="checkpoint-card">
                         <div class="odometer-tag">CHECKPOINT — ACTIVE</div>
-                        <h3>Web Developer Intern</h3>
+                        <h3>Software Developer Intern</h3>
                         <p class="experience-company">EllocentLabs</p>
                         <p class="experience-duration">Feb 2026 – Present</p>
                         <div class="checkpoint-tech">
-                            <span>FastAPI</span><span>PostgreSQL</span><span>Alembic</span><span>REST APIs</span>
+                            <span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>REST APIs</span>
                         </div>
                         <ul class="experience-responsibilities">
-                            <li>Designed and debugged backend APIs using <span class="highlight">FastAPI</span> for <span class="highlight">business logic, validation,</span>, and <span class="highlight">error handling</span>.</li>
-                            <li>Analyzed API <span class="highlight">request/response</span> flows to identify and fix endpoint issues, improving system stability.</li>
-                            <li>Wrote and optimized <span class="highlight">SQL queries</span> in <span class="highlight">PostgreSQL</span> using <span class="highlight">JOINs</span> and <span class="highlight">aggregations</span> for efficient data handling.</li>
-                            <li>Managed <span class="highlight">database schema migrations</span> using <span class="highlight">Alembic</span> to ensure smooth updates across environments.</li>
-                            <li>Collaborated with frontend developers to resolve <span class="highlight">integration issues</span> and improve <span class="highlight">end-to-end reliability</span>.</li>
-                            <li>Used <span class="highlight">application logs</span> and <span class="highlight">request tracing</span> to debug API failures and identify <span class="highlight">performance bottlenecks</span>.</li>
-                            <li>Worked on improving <span class="highlight">backend reliability</span>, <span class="highlight">debugging production-level issues</span>, and ensuring consistent data flow.</li>
+                            <li>Shipped <span class="highlight">15+ production REST APIs</span> across the Talent Pool, Bulk Import, and Job Adder modules of a live ATS platform, independently designing endpoints, database schemas, and auth flows in <span class="highlight">Python, FastAPI, and PostgreSQL</span> within a service-oriented architecture.</li>
+                            <li>Eliminated request timeouts on large resume batches by re-architecting bulk upload from a synchronous call into an <span class="highlight">asynchronous worker</span> with per-file status tracking, removing a recurring production failure point.</li>
+                            <li>Reduced duplicate candidate records to zero on re-import by writing <span class="highlight">SQL-based email-match upsert logic</span> that updates existing profiles instead of inserting duplicates.</li>
+                            <li>Removed a full manual data-entry step for recruiters by reworking the Add-Candidate-to-Job flow to <span class="highlight">parse resumes server-side</span> in Python and auto-prefill the candidate form.</li>
+                            <li>Built a <span class="highlight">non-blocking, cursor-paginated activity-logging service</span> in Python to improve debuggability and audit visibility across all platform modules, merged after peer review in Agile/Scrum sprints.</li>
                         </ul>
+                    </div>
+                </div>
+
+                <div class="checkpoint checkpoint-next" data-checkpoint="1">
+                    <div class="checkpoint-marker">
+                        <span class="checkpoint-ring"></span>
+                        <span class="checkpoint-core"></span>
+                    </div>
+                    <div class="checkpoint-card checkpoint-card-next">
+                        <div class="odometer-tag odometer-tag-next">NEXT STOP</div>
+                        <h3>Full-Time Software Engineer Role</h3>
+                        <p class="experience-duration">Open to opportunities — Available now</p>
+                        <p class="checkpoint-next-desc">Looking to join a team building production backend systems or full-stack products where I can keep shipping REST APIs, owning data models, and learning from senior engineers.</p>
                     </div>
                 </div>
             </div>
@@ -458,8 +572,8 @@
 
     <!-- ============ PROJECTS / THE GARAGE ============ -->
     <section id="projects" class="garage-showcase">
-        <h1 class="section-subtitle">SECTOR 05 &middot; PROJECTS</h1>
-        <h1 class="section-title">The Garage — Builds &amp; Track Records</h1>
+        <p class="section-subtitle">SECTOR 05 &middot; PROJECTS</p>
+        <h2 class="section-title">The Garage — Builds &amp; Track Records</h2>
         <p class="garage-caption">Each build below has been road-tested, deployed, and driven in production.</p>
 
         <div class="spec-showcase">
@@ -467,11 +581,62 @@
             <!-- PROJECT 01 -->
             <article class="spec-panel" data-project="01">
                 <div class="spec-visual">
+                    <img src="Images/careerflow/dashboard-1.png" alt="CareerFlow dashboard showing application stats, companies tracked, and offers received" loading="lazy">
+                </div>
+                <div class="spec-info">
+                    <div class="spec-index">PROJECT 01</div>
+                    <h3 class="spec-name">CareerFlow</h3>
+                    <div class="spec-fields">
+                        <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Web Application</span></div>
+                        <div class="spec-field"><span class="spec-field-label">ENGINE</span><span class="spec-field-value">Java 17 / Spring Boot 3 / React</span></div>
+                        <div class="spec-field"><span class="spec-field-label">SYSTEMS</span><span class="spec-field-value">PostgreSQL / Docker / Swagger</span></div>
+                        <div class="spec-field"><span class="spec-field-label">STATUS</span><span class="spec-field-value status-deployed">DEPLOYED</span></div>
+                    </div>
+                    <p class="spec-desc">A smart job application tracking platform — a 60+ endpoint REST API across 10 backend modules over a normalized 15-entity PostgreSQL schema, secured with JWT and Google OAuth2, covered by ~200 automated tests, with a React dashboard managing 130,000+ records — 35,000+ applications across 6,000+ companies, plus ~44,000 interviews and ~35,000 follow-ups.</p>
+                    <p class="spec-achievement"><span class="achievement-label">KEY ACHIEVEMENT</span> Secured the platform end-to-end with Spring Security — dual JWT + Google OAuth2 authentication, BCrypt hashing, database token blacklisting, role-based access control enforced at the API layer, and audit logging of every significant action — validated by 192 backend tests, with a multi-stage Docker build deployed independently to Render and Vercel.</p>
+                    <div class="spec-links">
+                        <a href="project-careerflow.html" class="btn btn-details"><i class="fas fa-magnifying-glass"></i>View Details</a>
+                        <a href="https://github.com/VKGarg7/CareerFlow" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                        <a href="https://career-flow-chi.vercel.app" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROJECT 02 -->
+            <article class="spec-panel reverse" data-project="02">
+                <div class="spec-visual spec-visual-placeholder">
+                    <div class="placeholder-stack">
+                        <i class="fas fa-robot"></i>
+                        <span>FinPilot AI</span>
+                    </div>
+                </div>
+                <div class="spec-info">
+                    <div class="spec-index">PROJECT 02</div>
+                    <h3 class="spec-name">FinPilot AI</h3>
+                    <div class="spec-fields">
+                        <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">AI Platform</span></div>
+                        <div class="spec-field"><span class="spec-field-label">ENGINE</span><span class="spec-field-value">Next.js / Spring Boot 3 / FastAPI</span></div>
+                        <div class="spec-field"><span class="spec-field-label">SYSTEMS</span><span class="spec-field-value">PostgreSQL / LangGraph / Qdrant</span></div>
+                        <div class="spec-field"><span class="spec-field-label">STATUS</span><span class="spec-field-value status-prototype">PROTOTYPE</span></div>
+                    </div>
+                    <p class="spec-desc">An AI-powered personal financial intelligence platform aggregating accounts, cards, investments, loans, and insurance into a single AI coaching layer built on deterministic, non-hallucinated calculations rather than free-form LLM output.</p>
+                    <p class="spec-achievement"><span class="achievement-label">KEY ACHIEVEMENT</span> Designed a multi-service architecture separating deterministic financial computation (Java/Spring Boot) from the AI reasoning layer (Python/FastAPI/LangGraph), so AI-generated advice is always grounded in verified numbers.</p>
+                    <div class="spec-links">
+                        <a href="project-finpilot.html" class="btn btn-details"><i class="fas fa-magnifying-glass"></i>View Details</a>
+                        <a href="https://github.com/VKGarg7/FinPilot-AI" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
+                        <a href="https://finpilot-ai-livid.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Prototype</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PROJECT 03 -->
+            <article class="spec-panel" data-project="03">
+                <div class="spec-visual">
                     <span class="scan-light"></span>
                     <img src="./Images/movietix.png" alt="MovieTix Screenshot" loading="lazy">
                 </div>
                 <div class="spec-info">
-                    <div class="spec-index">PROJECT 01</div>
+                    <div class="spec-index">PROJECT 03</div>
                     <h3 class="spec-name">MovieTix</h3>
                     <div class="spec-fields">
                         <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Web Application</span></div>
@@ -489,14 +654,14 @@
                 </div>
             </article>
 
-            <!-- PROJECT 02 -->
-            <article class="spec-panel reverse" data-project="02">
+            <!-- PROJECT 04 -->
+            <article class="spec-panel reverse" data-project="04">
                 <div class="spec-visual">
                     <span class="scan-light"></span>
                     <img src="./Images/food-delivery.webp" alt="Food Delivery Website Screenshot" loading="lazy">
                 </div>
                 <div class="spec-info">
-                    <div class="spec-index">PROJECT 02</div>
+                    <div class="spec-index">PROJECT 04</div>
                     <h3 class="spec-name">Food Delivery</h3>
                     <div class="spec-fields">
                         <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Web Application</span></div>
@@ -514,14 +679,14 @@
                 </div>
             </article>
 
-            <!-- PROJECT 03 -->
-            <article class="spec-panel" data-project="03">
+            <!-- PROJECT 05 -->
+            <article class="spec-panel" data-project="05">
                 <div class="spec-visual">
                     <span class="scan-light"></span>
                     <img src="./Images/ecom.png" alt="E-Commerce Screenshot" loading="lazy">
                 </div>
                 <div class="spec-info">
-                    <div class="spec-index">PROJECT 03</div>
+                    <div class="spec-index">PROJECT 05</div>
                     <h3 class="spec-name">E-Commerce</h3>
                     <div class="spec-fields">
                         <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">Frontend Storefront</span></div>
@@ -539,14 +704,14 @@
                 </div>
             </article>
 
-            <!-- PROJECT 04 -->
-            <article class="spec-panel reverse" data-project="04">
+            <!-- PROJECT 06 -->
+            <article class="spec-panel reverse" data-project="06">
                 <div class="spec-visual">
                     <span class="scan-light"></span>
                     <img src="./Images/amazon.png" alt="Amazon Clone Screenshot" loading="lazy">
                 </div>
                 <div class="spec-info">
-                    <div class="spec-index">PROJECT 04</div>
+                    <div class="spec-index">PROJECT 06</div>
                     <h3 class="spec-name">Amazon Clone</h3>
                     <div class="spec-fields">
                         <div class="spec-field"><span class="spec-field-label">CLASS</span><span class="spec-field-value">UI Replication</span></div>
@@ -570,51 +735,127 @@
     <!-- ============ CONTACT / PIT LANE ============ -->
     <section id="contact" class="contact">
         <div class="contact-inner">
-        <h1 class="section-subtitle">SECTOR 06 &middot; CONTACT</h1>
-        <h2 class="section-title" style="margin-bottom: 0.5rem;">Pit Lane Communication</h2>
-        <div class="contact-header">
-            <div style="flex:1; min-width: 250px;">
-                <h2 class="contact-h2">Let's create something amazing
-                    together</h2>
-                <p class="contact-p">Ready to bring your next project to life? Let's connect and
-                    discuss how I can help you achieve your goals.</p>
+        <p class="section-subtitle">SECTOR 06 &middot; CONTACT</p>
+
+        <div class="contact-grid">
+            <div class="contact-left">
+                <h2 class="pit-headline">Let's Build The<br>Next Machine.</h2>
+                <p class="pit-subline">Ready to bring your next project to life? Send a transmission or reach me directly.</p>
+
+                <div class="pit-quick-actions">
+                    <a href="mailto:ivansh.garg4@gmail.com" class="pit-action"><i class="fas fa-envelope"></i><span>Email Me</span></a>
+                    <a href="https://linkedin.com/in/vansh-garg-bb5060202/" target="_blank" class="pit-action"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+                    <a href="https://github.com/VKGarg7" target="_blank" class="pit-action"><i class="fab fa-github"></i><span>GitHub</span></a>
+                    <a href="./Images/Vansh_Kumar_Garg_Resume.pdf" target="_blank" class="pit-action"><i class="fas fa-file-arrow-down"></i><span>Resume</span></a>
+                    <a href="https://leetcode.com/VKGarg/" target="_blank" class="pit-action"><i class="fas fa-code"></i><span>LeetCode</span></a>
+                </div>
+
+                <p class="contact-quote">“Clean code. Great UX. Real results.”</p>
+                <p class="type-text">Open to Freelance · Remote · Internships · Full-Time</p>
+
+                <div class="tech-signature">
+                    <span>Made with 💙 using HTML, CSS &amp; JavaScript, and ❤️ for code.</span>
+                </div>
             </div>
-            <div class="contact-div">
-                <a href="./Images/Vansh_Kumar_Garg_Resume.pdf" target="_blank" class="contact-a">
-                    My Resume &nbsp;<i class="fas fa-arrow-up-right-from-square"></i>
-                </a>
+
+            <!-- ===== Communication console ===== -->
+            <div class="console-wrap">
+                <div class="console-frame" id="consoleFrame">
+                    <div class="console-header">
+                        <span class="console-dot red"></span>
+                        <span class="console-dot amber"></span>
+                        <span class="console-dot green"></span>
+                        <span class="console-title">TRANSMISSION CONSOLE</span>
+                    </div>
+
+                    <form class="console-form" id="contactForm" novalidate>
+                        <div class="console-field">
+                            <label for="ccName">NAME</label>
+                            <input type="text" id="ccName" name="name" autocomplete="name" required>
+                            <span class="console-error" id="ccNameError" role="alert"></span>
+                        </div>
+                        <div class="console-field">
+                            <label for="ccEmail">EMAIL</label>
+                            <input type="email" id="ccEmail" name="email" autocomplete="email" required>
+                            <span class="console-error" id="ccEmailError" role="alert"></span>
+                        </div>
+                        <div class="console-field">
+                            <label for="ccMessage">MESSAGE</label>
+                            <textarea id="ccMessage" name="message" rows="5" required></textarea>
+                            <span class="console-error" id="ccMessageError" role="alert"></span>
+                        </div>
+
+                        <button type="submit" class="transmit-btn magnetic" id="transmitBtn">
+                            <span class="transmit-label">TRANSMIT MESSAGE</span>
+                            <i class="fas fa-satellite-dish"></i>
+                        </button>
+                        <p class="console-note">Opens your email client with this message pre-filled, addressed to me.</p>
+                    </form>
+
+                    <div class="console-success" id="consoleSuccess" hidden role="status" aria-live="polite">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>TRANSMISSION SUCCESSFUL</h3>
+                        <p>MESSAGE RECEIVED.</p>
+                        <button type="button" class="btn btn-secondary" id="consoleReset">Send Another</button>
+                    </div>
+                </div>
             </div>
-
         </div>
-        <hr class="divider" />
-
-
-        <div class="contact-socials">
-            <a href="mailto:ivansh.garg4@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-            <a href="https://github.com/VKGarg7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://linkedin.com/in/vansh-garg-bb5060202/" target="_blank"><i class="fab fa-linkedin"></i>
-                LinkedIn</a>
-            <a href="https://leetcode.com/VKGarg/" target="_blank"><i class="fas fa-code"></i> LeetCode</a>
         </div>
-        <div class="tech-signature">
-            <span>Made with 💙 using React, Tailwind, and ❤️ for code.</span>
-        </div>
-        <p class="contact-quote">“Clean code. Great UX. Real results.”</p>
-
-        <p class="type-text">Open to Freelance · Remote · Internships · Full-Time</p>
-        </div>
-        <a href="#home" class="scroll-up"><i class="fas fa-arrow-up"></i></a>
-
+        <a href="#home" class="scroll-up" aria-label="Back to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></a>
 
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="social-footer">
         <p>© 2025 Vansh Garg | All rights reserved.</p>
+        <button class="hidden-garage-trigger" id="hiddenGarageTrigger" type="button" aria-label="Open my dream garage — a personal easter egg">
+            <i class="fas fa-warehouse"></i>
+        </button>
     </footer>
 
+    <!-- ===== Easter egg: Track Mode toast ===== -->
+    <div class="track-mode-toast" id="trackModeToast" role="status" aria-live="polite"></div>
+
+    <!-- ===== Easter egg: My Dream Garage modal ===== -->
+    <div class="dream-garage-overlay" id="dreamGarageOverlay" role="dialog" aria-modal="true" aria-labelledby="dreamGarageTitle" hidden>
+        <div class="dream-garage-modal">
+            <button class="dream-garage-close" id="dreamGarageClose" type="button" aria-label="Close dream garage">
+                <i class="fas fa-xmark"></i>
+            </button>
+            <div class="dream-garage-header">
+                <span class="dream-garage-tag">PERSONAL · NOT PART OF THE PORTFOLIO</span>
+                <h2 id="dreamGarageTitle">My Dream Garage</h2>
+                <p>A just-for-fun corner — the machines I'd actually want to own, nothing to do with my engineering work.</p>
+            </div>
+            <div class="dream-garage-grid">
+                <div class="dream-garage-card">
+                    <i class="fas fa-car-side"></i>
+                    <h3>Placeholder Supercar</h3>
+                    <span class="dream-garage-note">Swap in your real favorite — e.g. a specific make/model</span>
+                </div>
+                <div class="dream-garage-card">
+                    <i class="fas fa-motorcycle"></i>
+                    <h3>Placeholder Superbike</h3>
+                    <span class="dream-garage-note">Swap in your real favorite — e.g. a specific make/model</span>
+                </div>
+                <div class="dream-garage-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Placeholder Classic</h3>
+                    <span class="dream-garage-note">Swap in your real favorite — e.g. a specific make/model</span>
+                </div>
+                <div class="dream-garage-card">
+                    <i class="fas fa-motorcycle"></i>
+                    <h3>Placeholder Track Bike</h3>
+                    <span class="dream-garage-note">Swap in your real favorite — e.g. a specific make/model</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JS -->
-    <script src="index.js"></script>
+    <script src="index.js" defer></script>
 </body>
 
 
