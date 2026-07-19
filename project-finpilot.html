@@ -65,7 +65,7 @@
             <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to the Garage</a>
             <div class="detail-index">PROJECT 02 · INSPECTION REPORT</div>
             <h1 class="detail-title">FinPilot AI</h1>
-            <p class="detail-subtitle">An AI-powered personal financial intelligence platform aggregating accounts, cards, investments, loans, and insurance into one AI coaching layer.</p>
+            <p class="detail-subtitle">An AI-powered personal financial intelligence platform aggregating accounts, cards, investments, loans, and insurance into one AI coaching layer — specified across a 6-document, 500+ feature product spec and grounded in deterministic, non-hallucinated calculations.</p>
             <div class="detail-quickfacts">
                 <div class="qf"><span class="qf-label">CLASS</span><span class="qf-value">AI Platform</span></div>
                 <div class="qf"><span class="qf-label">ENGINE</span><span class="qf-value">Next.js / Spring Boot 3 / FastAPI</span></div>
@@ -76,31 +76,81 @@
                 <a href="https://github.com/VKGarg7/FinPilot-AI" class="btn" target="_blank"><i class="fab fa-github"></i>GitHub</a>
                 <a href="https://finpilot-ai-livid.vercel.app/" class="btn btn-secondary" target="_blank"><i class="fas fa-external-link-alt"></i>Live Prototype</a>
             </div>
-            <div class="detail-hero-placeholder">
-                <i class="fas fa-robot"></i>
-                <span>FinPilot AI</span>
+            <div class="shot-row-3">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/home.png" alt="FinPilot AI home dashboard — net worth, health score ring, cash flow, budgets at risk, AI insight of the day, and goals" loading="eager">
+                    <figcaption>Home — net worth, health score &amp; AI insight</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/coach.png" alt="FinPilot AI coach chat — assistant grounded in live computed data, with source tags and an advisory-boundary disclaimer" loading="eager">
+                    <figcaption>AI Coach — every figure carries a source tag</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/health-score.png" alt="Financial Health Score 67 with six-pillar breakdown and AI-ranked improvement actions" loading="eager">
+                    <figcaption>Health Score — versioned formula, six pillars</figcaption>
+                </figure>
             </div>
         </header>
 
         <section class="detail-section" id="overview">
             <div class="detail-section-head"><span class="detail-num">01</span><h2>Overview</h2></div>
-            <p>FinPilot AI is an early-stage personal financial intelligence platform that aggregates accounts, cards, investments, loans, and insurance into one place, then layers an AI coaching assistant on top of that aggregated view. The live link points to a <code>/prototype</code> build used for UX validation — this project is honestly scoped as scaffolding and architecture in progress, not a finished production app.</p>
+            <p>FinPilot AI is a personal financial intelligence platform that aggregates accounts, cards, investments, loans, and insurance into one place, then layers an AI coaching assistant on top of that aggregated view. Before any production code, the product was specified end-to-end across six companion documents: a 501-feature inventory spanning 35 modules, a PRD with an enterprise addendum (pricing, compliance, governance), a 32-ticket backlog with full acceptance criteria, a multi-agent AI design document, screen-level UX documentation, and a testing spec covering everything from hallucination testing to chaos engineering. A cross-document audit traces every feature ID through all six layers. The live link points to a <code>/prototype</code> build used for UX validation — the project is honestly scoped as specification and architecture in progress, not a finished production app.</p>
+
+            <div class="shot-row">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/transactions.png" alt="Money view — categorized transactions with a low-confidence auto-categorization flag asking the user to confirm" loading="lazy">
+                    <figcaption>Transactions — low-confidence categorizations ask, never assume</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/budgets.png" alt="Budgets view with per-category progress bars and an AI-suggested rebalance based on 3-month actual pace" loading="lazy">
+                    <figcaption>Budgets — AI rebalance suggestions from actual pace, opt-in</figcaption>
+                </figure>
+            </div>
         </section>
 
         <section class="detail-section" id="challenge">
             <div class="detail-section-head"><span class="detail-num">02</span><h2>The Challenge</h2></div>
-            <p>The central risk in any "AI financial coach" product is hallucination: an LLM confidently stating a wrong balance, a wrong interest calculation, or made-up advice based on incomplete context is far worse than the assistant simply not answering. The system needed a way to let an LLM reason conversationally about a user's finances while guaranteeing that every number it states is pulled from a verified, deterministic calculation rather than generated by the model itself.</p>
+            <p>The central risk in any "AI financial coach" product is hallucination: an LLM confidently stating a wrong balance, a wrong interest calculation, or made-up advice based on incomplete context is far worse than the assistant simply not answering. The system needed a way to let an LLM reason conversationally about a user's finances while guaranteeing that every number it states is pulled from a verified, deterministic calculation rather than generated by the model itself. The second challenge was scale of definition: making 35 modules — from expense tracking to household sharing to peer benchmarking — behave as one coherent product required a traceability system where every ticket, screen, and test case maps back to a stable feature ID.</p>
         </section>
 
         <section class="detail-section" id="engineering">
             <div class="detail-section-head"><span class="detail-num">03</span><h2>The Engineering</h2></div>
-            <p>The architecture deliberately splits responsibilities across services instead of putting everything behind one LLM call. A Java/Spring Boot 3 service owns deterministic financial computation — balances, aggregation, loan/insurance data — backed by PostgreSQL. A separate Python/FastAPI service handles the AI reasoning layer, orchestrating multi-step reasoning with LangGraph and using Qdrant for vector retrieval over financial context, with OpenAI/Gemini as the underlying model providers. The AI layer queries the deterministic layer for facts rather than inventing them, so its output is grounded in real computed data.</p>
+            <p>The architecture deliberately splits responsibilities across services instead of putting everything behind one LLM call. A Java/Spring Boot 3 service owns deterministic financial computation — balances, aggregation, XIRR, amortization, tax-regime comparison, the versioned Financial Health Score — backed by PostgreSQL. A separate Python/FastAPI service handles the AI reasoning layer, orchestrating a multi-agent pipeline with LangGraph (planner, retrieval, calculation, coaching, and reflection agents, with compliance and risk agents specified in the design docs) and using Qdrant for vector retrieval over financial context, with OpenAI/Gemini as the underlying model providers. The AI layer queries the deterministic layer for facts rather than inventing them, so its output is grounded in real computed data — and every response carries citations and a confidence indicator.</p>
+
+            <div class="shot-row-3">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/loan.png" alt="Home loan view with deterministic prepayment simulator — extra monthly payment slider showing interest saved and tenure reduction" loading="lazy">
+                    <figcaption>Prepayment simulator — deterministic amortization</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/tax.png" alt="Tax view — old vs new regime comparison, deduction utilization, and advance-tax installments on freelance income" loading="lazy">
+                    <figcaption>Tax — dual-regime comparison &amp; advance-tax planner</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/investments.png" alt="Investments view with allocation donut, per-fund XIRR, and a holdings-overlap warning between two funds" loading="lazy">
+                    <figcaption>Investments — per-fund XIRR &amp; overlap detection</figcaption>
+                </figure>
+            </div>
+
+            <p>The spec enforces this in writing: a global business rule states no numeric value shown to the user may originate from the language model. Others mandate scoped, time-boxed, revocable consent; cohort-based anonymized benchmarking with a minimum-cohort privacy floor that fails closed; and versioned score formulas so historical figures are never silently recalculated.</p>
+
+            <div class="shot-row">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/insurance.png" alt="Insurance coverage health — life and health cover vs benchmark with gap amounts, and sponsored placements visually separated per Global Business Rule 4" loading="lazy">
+                    <figcaption>Insurance gaps — sponsored content never touches the benchmark</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/peers.png" alt="Peer comparison against an anonymized 4,218-user cohort with percentile bars for health score, savings rate, and debt-to-income" loading="lazy">
+                    <figcaption>Peer benchmarking — anonymized cohorts, one master switch</figcaption>
+                </figure>
+            </div>
+
             <p>Infrastructure-wise, the project is set up with Docker, RabbitMQ for async messaging between services, and MinIO for object storage, with GitHub Actions scaffolded for CI — reflecting a multi-service system designed to scale past a single monolith, even though it's still early.</p>
         </section>
 
         <section class="detail-section" id="architecture">
             <div class="detail-section-head"><span class="detail-num">04</span><h2>System Architecture</h2></div>
-            <p class="arch-caption">Deterministic computation and AI reasoning kept as separate services.</p>
+            <p class="arch-caption">Deterministic computation and AI reasoning kept as separate services — the AI explains numbers, it never produces them.</p>
 
             <div class="arch-diagram" id="archDiagram">
                 <svg class="arch-lines" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -151,6 +201,7 @@
                 <div class="stack-chip"><i class="fab fa-python"></i>Python / FastAPI</div>
                 <div class="stack-chip"><i class="fas fa-project-diagram"></i>LangGraph</div>
                 <div class="stack-chip"><i class="fas fa-vector-square"></i>Qdrant</div>
+                <div class="stack-chip"><i class="fas fa-bolt"></i>Redis</div>
                 <div class="stack-chip"><i class="fab fa-docker"></i>Docker / RabbitMQ / MinIO</div>
             </div>
         </section>
@@ -158,26 +209,79 @@
         <section class="detail-section" id="features">
             <div class="detail-section-head"><span class="detail-num">06</span><h2>Key Features</h2></div>
             <ul class="feature-list">
-                <li><i class="fas fa-layer-group"></i><div><strong>Financial aggregation</strong><p>Accounts, cards, investments, loans, and insurance unified into one view.</p></div></li>
-                <li><i class="fas fa-robot"></i><div><strong>AI coaching layer</strong><p>Conversational assistant grounded in deterministic, non-hallucinated calculations.</p></div></li>
-                <li><i class="fas fa-sitemap"></i><div><strong>Multi-service architecture</strong><p>Computation and AI reasoning deliberately split across separate backend services.</p></div></li>
-                <li><i class="fas fa-project-diagram"></i><div><strong>LangGraph orchestration</strong><p>Multi-step reasoning over financial context rather than single-shot prompting.</p></div></li>
+                <li><i class="fas fa-layer-group"></i><div><strong>Financial aggregation</strong><p>Accounts, cards, investments, loans, and insurance unified into one consent-scoped view.</p></div></li>
+                <li><i class="fas fa-robot"></i><div><strong>AI coaching layer</strong><p>Conversational assistant grounded in deterministic, non-hallucinated calculations, with cited sources and visible confidence.</p></div></li>
+                <li><i class="fas fa-project-diagram"></i><div><strong>Multi-agent architecture</strong><p>Planner, retrieval, calculation, coaching, and reflection agents orchestrated with LangGraph rather than single-shot prompting.</p></div></li>
+                <li><i class="fas fa-calculator"></i><div><strong>Deterministic engines</strong><p>XIRR, loan amortization/prepayment simulation, dual tax-regime comparison, and a versioned six-pillar Financial Health Score.</p></div></li>
+                <li><i class="fas fa-user-shield"></i><div><strong>Privacy-first benchmarking</strong><p>Anonymized cohort comparison that fails closed below a 50-user privacy floor.</p></div></li>
+                <li><i class="fas fa-home"></i><div><strong>Household &amp; automation</strong><p>Per-category consent-based sharing and a WHEN/THEN rules engine with conflict detection and a full audit log.</p></div></li>
             </ul>
+
+            <div class="shot-row-3">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/goals.png" alt="Goals view — emergency fund, home down payment, and vacation goals with feasibility math against current monthly surplus" loading="lazy">
+                    <figcaption>Goals — feasibility computed from real surplus</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/household-goal.png" alt="Household joint goal with per-member contribution ledger and an AI insight on the combined pace" loading="lazy">
+                    <figcaption>Household — joint goal with contribution ledger</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/rules.png" alt="Automation rules list — WHEN/THEN rules with fire counts, a pause-all safety valve, and a conflict flag on two overlapping rules" loading="lazy">
+                    <figcaption>Rules — WHEN/THEN engine with conflict detection</figcaption>
+                </figure>
+            </div>
+
+            <div class="shot-row-3">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/subscriptions.png" alt="Subscriptions view flagging a Netflix price hike and a possibly-unused Spotify subscription" loading="lazy">
+                    <figcaption>Subscriptions — price-hike &amp; unused-service detection</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/audit-log.png" alt="Automation audit log — every rule firing recorded with timestamp, nothing acts silently" loading="lazy">
+                    <figcaption>Audit log — automation that acts silently is a trust risk</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/notifications.png" alt="Notification inbox with categorized, snoozable alerts and a bundled new-dependent checklist" loading="lazy">
+                    <figcaption>Notifications — bundled, snoozable, never a flurry</figcaption>
+                </figure>
+            </div>
         </section>
 
         <section class="detail-section" id="performance">
             <div class="detail-section-head"><span class="detail-num">07</span><h2>Performance</h2></div>
-            <p>This project is intentionally not benchmarked yet — it's in the prototype/UX-validation stage, not production. The architectural decision that most affects future performance is the separation of deterministic computation from AI reasoning: the compute-heavy financial calculations don't need to round-trip through an LLM, which keeps the expensive AI calls scoped to reasoning rather than arithmetic.</p>
+            <p>This project is intentionally not benchmarked yet — it's in the prototype/UX-validation stage, not production. The spec itself defines the targets: dashboard render under 2s P90, AI first-token under 3s P90, 99.9% availability for deterministic reads with graceful degradation when the AI layer is down. The architectural decision that most affects future performance is the separation of deterministic computation from AI reasoning: compute-heavy financial calculations don't round-trip through an LLM, which keeps the expensive AI calls scoped to reasoning rather than arithmetic.</p>
         </section>
 
         <section class="detail-section" id="results">
             <div class="detail-section-head"><span class="detail-num">08</span><h2>Results</h2></div>
-            <p>A live prototype build is deployed (linked above) for UX validation of the coaching flow and financial dashboard UI. The full multi-service backend — Spring Boot, FastAPI/LangGraph, RabbitMQ, MinIO — exists as scaffolding and is still being built out; this project is presented honestly as early-stage rather than as a finished product.</p>
+            <p>A live prototype build is deployed (linked above) for UX validation of the coaching flow and financial dashboard UI, covering the full Wave 1 scope — onboarding, consent, expense/budget, wealth, goals, benchmarking, household, rules, and AI coach — plus an admin portal with AI evaluation gates and incident tooling. The documentation set was closed with a cross-document consistency audit scoring it 88/100 startup-ready, with every feature traced from inventory through PRD, backlog, AI design, UX, and testing. The full multi-service backend — Spring Boot, FastAPI/LangGraph, RabbitMQ, MinIO — exists as scaffolding and is being built out epic-by-epic; the project is presented honestly as early-stage rather than as a finished product.</p>
+
+            <figure class="shot-figure">
+                <img src="Images/finpilot/admin-overview.png" alt="Admin portal overview — hallucination rate at 0.18% against a 0.5% gate, open incidents, eval suites passing, and AI cost per active user" loading="lazy">
+                <figcaption>Admin portal — hallucination rate tracked as a triaged queue, not an estimate</figcaption>
+            </figure>
+
+            <figure class="shot-figure">
+                <img src="Images/finpilot/admin-ai-quality.png" alt="AI Quality evaluation dashboard — grounding, advisory-boundary, calculation-correctness and other gated suites all passing, with a prompt A/B viewer comparing an ungrounded answer against a grounded, cited one" loading="lazy">
+                <figcaption>AI evaluation gates — no prompt or model change ships without every gated suite green</figcaption>
+            </figure>
+
+            <div class="shot-row">
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/admin-incidents.png" alt="Incident management console with severity-tagged incidents including an AI incident traced to retrieval index staleness" loading="lazy">
+                    <figcaption>Incidents — every Sev-1/2 requires a post-incident review</figcaption>
+                </figure>
+                <figure class="shot-figure">
+                    <img src="Images/finpilot/admin-compliance.png" alt="Compliance Ops — sponsored-placement disclosure audit with one violation flagged for immediate pull, regulatory content review queue, and consent/deletion metrics" loading="lazy">
+                    <figcaption>Compliance Ops — revenue never outranks disclosure</figcaption>
+                </figure>
+            </div>
         </section>
 
         <section class="detail-section" id="lessons">
             <div class="detail-section-head"><span class="detail-num">09</span><h2>Lessons</h2></div>
-            <p>Designing the AI/deterministic split before writing much code forced an early answer to "what can this system say for certain vs. what is it guessing" — a distinction that's easy to blur once an LLM is in the loop and hard to retrofit afterward. Scoping this project publicly as a prototype rather than overstating its completeness was also a deliberate choice, matching the same "honest about scope" approach used across the other project write-ups here.</p>
+            <p>Designing the AI/deterministic split before writing much code forced an early answer to "what can this system say for certain vs. what is it guessing" — a distinction that's easy to blur once an LLM is in the loop and hard to retrofit afterward. Writing the full specification before implementation had a similar effect: a cross-document audit caught gaps (a fully-designed pricing UX with no feature ID or acceptance criteria behind it) that would otherwise have surfaced mid-build as engineering ambiguity. Scoping the project publicly as a prototype rather than overstating its completeness was also a deliberate choice, matching the same "honest about scope" approach used across the other project write-ups here.</p>
         </section>
 
         <div class="detail-footer-nav">
