@@ -210,8 +210,22 @@ body { cursor: none; }
     align-items: center;
 }
 
+/* Three narrow phone-width shots side by side (mobile-first app screens) */
+.shot-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 1.75rem 0;
+    align-items: start;
+}
+.shot-row-3 .shot-figure { margin: 0; }
+
 @media screen and (max-width: 700px) {
     .shot-row { grid-template-columns: 1fr; }
+    .shot-row-3 { grid-template-columns: 1fr; }
+}
+@media screen and (min-width: 701px) and (max-width: 980px) {
+    .shot-row-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
 .detail-links {
