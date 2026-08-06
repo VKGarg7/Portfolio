@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { profileCards } from "../data/content";
 import { makeParticles } from "../lib/particles";
+import { asset } from "../lib/format";
 import "./GarageSection.css";
 
 const CARD_INTERVAL_MS = 3800;
@@ -57,7 +58,7 @@ export function GarageSection() {
             <div className="avatar-wireframe" />
 
             <div className="avatar-photo-wrap">
-              <img src="/images/profile.png" alt="" className="avatar-photo" />
+              <img src={asset("/images/profile.png")} alt="" className="avatar-photo" />
               <div className="avatar-scanline" />
               <div className="avatar-photo-vignette" />
             </div>

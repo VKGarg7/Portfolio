@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { pad2 } from "../lib/format";
+import { asset, pad2 } from "../lib/format";
 
 export type Feature = {
   title: string;
@@ -13,16 +13,16 @@ export type Feature = {
 
 export const featureSets: Record<string, Feature[]> = {
   CareerFlow: [
-    { title: "Application Command Center", icon: "table-columns", image: "/images/careerflow/applications-1.png", tech: ["React", "Spring Boot", "PostgreSQL"], description: "A high-volume workflow for searching, filtering, and managing application records without losing context.", snippet: "GET /api/applications?cursor=...\n→ paginated application feed" },
-    { title: "Interview Tracker", icon: "calendar-check", image: "/images/careerflow/interview-tracker.png", tech: ["React", "REST API", "JWT"], description: "A focused scheduling surface that keeps interview stages, status, and follow-ups visible to the team.", snippet: "PATCH /interviews/{id}\n→ update stage + audit event" },
-    { title: "API Contract Hub", icon: "file-code", image: "/images/careerflow/swagger.png", tech: ["Swagger", "Spring Security", "Docker"], description: "Documented API contracts make the platform easier to integrate, test, and evolve safely.", snippet: "@Operation(summary = \"Create application\")\n@PostMapping(\"/applications\")" },
-    { title: "Admin Console", icon: "user-shield", image: "/images/careerflow/admin.png", tech: ["React", "RBAC", "Spring Security"], description: "Role-scoped admin views for managing users and platform-wide data without exposing raw DB access.", snippet: "GET /api/admin/users\n→ role-filtered user list" },
-    { title: "Automated Test Suite", icon: "flask-vial", image: "/images/careerflow/test-run.png", tech: ["JUnit", "Spring Boot Test", "CI"], description: "192 backend tests covering auth, data integrity, and API contracts, run on every push.", snippet: "mvn test\n→ 192 passed, 0 failed" },
+    { title: "Application Command Center", icon: "table-columns", image: asset("/images/careerflow/applications-1.png"), tech: ["React", "Spring Boot", "PostgreSQL"], description: "A high-volume workflow for searching, filtering, and managing application records without losing context.", snippet: "GET /api/applications?cursor=...\n→ paginated application feed" },
+    { title: "Interview Tracker", icon: "calendar-check", image: asset("/images/careerflow/interview-tracker.png"), tech: ["React", "REST API", "JWT"], description: "A focused scheduling surface that keeps interview stages, status, and follow-ups visible to the team.", snippet: "PATCH /interviews/{id}\n→ update stage + audit event" },
+    { title: "API Contract Hub", icon: "file-code", image: asset("/images/careerflow/swagger.png"), tech: ["Swagger", "Spring Security", "Docker"], description: "Documented API contracts make the platform easier to integrate, test, and evolve safely.", snippet: "@Operation(summary = \"Create application\")\n@PostMapping(\"/applications\")" },
+    { title: "Admin Console", icon: "user-shield", image: asset("/images/careerflow/admin.png"), tech: ["React", "RBAC", "Spring Security"], description: "Role-scoped admin views for managing users and platform-wide data without exposing raw DB access.", snippet: "GET /api/admin/users\n→ role-filtered user list" },
+    { title: "Automated Test Suite", icon: "flask-vial", image: asset("/images/careerflow/test-run.png"), tech: ["JUnit", "Spring Boot Test", "CI"], description: "192 backend tests covering auth, data integrity, and API contracts, run on every push.", snippet: "mvn test\n→ 192 passed, 0 failed" },
   ],
   "FinPilot AI": [
-    { title: "Financial Home", icon: "chart-pie", image: "/images/finpilot/home.png", tech: ["Next.js", "Spring Boot", "PostgreSQL"], description: "A consolidated snapshot of financial accounts, decisions, and system health.", snippet: "GET /api/v1/household/overview\n→ deterministic financial totals" },
-    { title: "AI Coach", icon: "brain", image: "/images/finpilot/coach.png", tech: ["FastAPI", "LangGraph", "Qdrant"], description: "A guided intelligence layer that combines trusted product data with contextual coaching.", snippet: "graph.invoke({ householdId, intent })\n→ grounded recommendation" },
-    { title: "Investment View", icon: "chart-line", image: "/images/finpilot/investments.png", tech: ["React", "Java", "Rules Engine"], description: "A transparent portfolio view designed around explainable calculations rather than opaque outputs.", snippet: "portfolioValue = positions\n  .reduce(sumMarketValue, 0)" },
+    { title: "Financial Home", icon: "chart-pie", image: asset("/images/finpilot/home.png"), tech: ["Next.js", "Spring Boot", "PostgreSQL"], description: "A consolidated snapshot of financial accounts, decisions, and system health.", snippet: "GET /api/v1/household/overview\n→ deterministic financial totals" },
+    { title: "AI Coach", icon: "brain", image: asset("/images/finpilot/coach.png"), tech: ["FastAPI", "LangGraph", "Qdrant"], description: "A guided intelligence layer that combines trusted product data with contextual coaching.", snippet: "graph.invoke({ householdId, intent })\n→ grounded recommendation" },
+    { title: "Investment View", icon: "chart-line", image: asset("/images/finpilot/investments.png"), tech: ["React", "Java", "Rules Engine"], description: "A transparent portfolio view designed around explainable calculations rather than opaque outputs.", snippet: "portfolioValue = positions\n  .reduce(sumMarketValue, 0)" },
   ],
 };
 
