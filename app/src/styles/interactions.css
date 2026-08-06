@@ -1,0 +1,114 @@
+html { scroll-behavior:smooth; } #root { min-height:100%; position:relative; } #root::before,#root::after { content:""; inset:0; pointer-events:none; position:fixed; z-index:50; } #root::before { background:radial-gradient(ellipse at 18% 22%,rgba(79,216,255,.045),transparent 31%),radial-gradient(ellipse at 82% 75%,rgba(216,31,55,.055),transparent 34%); filter:blur(22px); animation:ambient-fog 15s ease-in-out infinite alternate; } #root::after { background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.022) 48%,transparent 68%); mix-blend-mode:screen; opacity:.38; }
+.glass-card { transition:border-color .35s ease,box-shadow .45s ease,filter .45s ease; } .glass-card:hover { border-color:rgba(255,255,255,.18); filter:brightness(1.06); } .btn { position:relative; transition:box-shadow .38s ease,border-radius .38s ease,background .38s ease; } .btn:hover { border-radius:14px; box-shadow:0 13px 28px rgba(0,0,0,.32),0 0 22px var(--red-soft); }
+@keyframes ambient-fog { from { opacity:.45; transform:scale(1) translate3d(-1%,0,0); } to { opacity:1; transform:scale(1.12) translate3d(1%,-1%,0); } } @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important; } }:root { --cursor-x:50vw; --cursor-y:50vh; --magnetic-x:0px; --magnetic-y:0px; }.cursor-spotlight { background:radial-gradient(circle,rgba(79,216,255,.10),rgba(79,216,255,.025) 20%,transparent 58%); height:420px; left:var(--cursor-x); mix-blend-mode:screen; pointer-events:none; position:fixed; top:var(--cursor-y); transform:translate(-50%,-50%); transition:left .09s linear,top .09s linear; width:420px; z-index:60; }.btn,.contact-action,.system-node,.neural-node,.feature-cube { overflow:hidden; position:relative; }.interaction-ripple { animation:interaction-ripple .65s ease-out forwards; background:rgba(255,255,255,.45); border-radius:50%; height:9px; pointer-events:none; position:absolute; transform:translate(-50%,-50%) scale(0); width:9px; z-index:8; }.project-device-stage img,.feature-shot img,.pit-photo img { transition:transform .7s cubic-bezier(.2,.8,.2,1),filter .6s ease; }.project-device-stage:hover img,.feature-shot:hover img,.pit-stop:hover .pit-photo img { filter:saturate(1.12) contrast(1.05); transform:scale(1.07); }.big-title,.hero-name,.finale-copy h2 { background-image:linear-gradient(110deg,#fff 25%,#fff 41%,var(--ice) 49%,var(--red-text) 56%,#fff 67%); background-size:240% 100%; -webkit-background-clip:text; background-clip:text; animation:gradient-reveal 7s ease-in-out infinite; color:transparent; }.glass-card::before { background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.06) 47%,transparent 62%); content:""; inset:0; opacity:.45; pointer-events:none; position:absolute; transform:translateX(-85%); transition:transform .8s ease; }.glass-card:hover::before { transform:translateX(85%); } @keyframes interaction-ripple { to { opacity:0; transform:translate(-50%,-50%) scale(23); } } @keyframes gradient-reveal { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } } @media (pointer:coarse),(prefers-reduced-motion:reduce) { .cursor-spotlight { display:none; } }
+
+/* ---- premium spring hover: .btn / .contact-action surfaces ----
+   the hero .cta-btn buttons opt out of this generic kit and use their own
+   restrained, single-motion treatment defined in HeroSection.css instead —
+   see the note there for why. */
+:root { --tilt-x:0deg; --tilt-y:0deg; --light-x:50%; --light-y:50%; }
+
+.btn, .contact-action { overflow: visible; perspective: 800px; transform-style: preserve-3d; }
+
+/* the magnetic pull (translate3d) is driven every frame by a JS spring simulation,
+   so it is deliberately left out of the CSS transition — a CSS easing curve layered
+   on top of an already-eased value produces double-damped, laggy motion */
+.btn, .contact-action {
+  transform: translate3d(var(--magnetic-x), var(--magnetic-y), 0) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(1);
+  transition:
+    box-shadow .5s cubic-bezier(.22,1,.36,1),
+    filter .5s cubic-bezier(.22,1,.36,1),
+    background .5s cubic-bezier(.22,1,.36,1),
+    border-color .5s cubic-bezier(.22,1,.36,1),
+    letter-spacing .45s cubic-bezier(.22,1,.36,1),
+    scale .45s cubic-bezier(.34,1.56,.34,1);
+}
+
+.btn:hover, .contact-action:hover {
+  scale: 1.04;
+  filter: brightness(1.08);
+  letter-spacing: .015em;
+}
+
+.btn:active, .contact-action:active {
+  transition: scale .18s cubic-bezier(.4,0,.2,1);
+  scale: .97;
+}
+
+/* moving light reflection that tracks the cursor within the button — also used
+   by .cta-btn via the dedicated .cta-btn-light span, independent of the rest
+   of this generic kit */
+.btn::before, .contact-action::before, .cta-btn-light {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(120px 120px at var(--light-x) var(--light-y), rgba(255,255,255,.22), transparent 65%);
+  opacity: 0; transition: opacity .4s ease;
+}
+.btn:hover::before, .contact-action:hover::before, .cta-btn:hover .cta-btn-light { opacity: 1; }
+
+/* icon slide + text tracking */
+.btn i, .contact-action i { transition: transform .5s cubic-bezier(.34,1.56,.34,1); }
+.btn:hover i, .contact-action:hover i { transform: translateX(3px); }
+
+@media (pointer:coarse), (prefers-reduced-motion:reduce) {
+  .btn, .contact-action { transform: none; }
+  .btn:hover, .contact-action:hover { scale: 1; filter: none; letter-spacing: normal; }
+  .btn::before, .contact-action::before, .cta-btn:hover .cta-btn-light { display: none; }
+  .btn:hover i, .contact-action:hover i { transform: none; }
+}
+
+/* ---- universal CTA kit: .btn / .contact-action only (not .cta-btn — see above) ---- */
+@keyframes cta-ring-spin { from { --ring-angle: 0deg; } to { --ring-angle: 360deg; } }
+@property --ring-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+
+/* soft floating idle motion — small, slow, never stops */
+.btn, .contact-action { animation: cta-float 6s ease-in-out infinite; }
+.btn:hover, .contact-action:hover { animation-play-state: paused; }
+@keyframes cta-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
+
+/* animated gradient border ring (red / orange / crimson), continuous rotation */
+.btn-ring, .contact-action-ring { border-radius: inherit; inset: -1.5px; pointer-events: none; position: absolute; z-index: 0; }
+.btn-ring::before, .contact-action-ring::before {
+  background: conic-gradient(from var(--ring-angle, 0deg), var(--red-text), var(--orange), #7a0e1f, var(--red-text));
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  opacity: .55;
+  padding: 1.25px;
+  position: absolute;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: padding .4s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+  animation: cta-ring-spin 6s linear infinite;
+}
+.btn:hover .btn-ring::before, .contact-action:hover .contact-action-ring::before { opacity: .9; padding: 1.75px; }
+
+/* ambient glow — a gentle, slow breathing bloom, always faintly present */
+.btn-bloom, .contact-action-bloom { background: radial-gradient(closest-side, rgba(255,106,31,.22), rgba(255,59,86,.12) 60%, transparent 80%); border-radius: inherit; filter: blur(14px); inset: -10px; opacity: .3; pointer-events: none; position: absolute; transition: opacity .5s ease, filter .5s ease; z-index: -1; animation: cta-glow-breathe 4s ease-in-out infinite; }
+.btn:hover .btn-bloom, .contact-action:hover .contact-action-bloom { filter: blur(18px); opacity: .8; }
+@keyframes cta-glow-breathe { 0%, 100% { opacity: .22; } 50% { opacity: .38; } }
+
+/* glass reflection sheen */
+.btn-sheen, .contact-action-sheen { border-radius: inherit; inset: 0; overflow: hidden; pointer-events: none; position: absolute; z-index: 1; }
+.btn-sheen::before, .contact-action-sheen::before {
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.14) 46%, rgba(255,255,255,.03) 52%, transparent 68%);
+  content: "";
+  inset: -20% -10%;
+  position: absolute;
+  transform: translateX(0);
+  transition: transform .6s cubic-bezier(.22,1,.36,1);
+}
+.btn:hover .btn-sheen::before, .contact-action:hover .contact-action-sheen::before { transform: translateX(35%); }
+
+/* text reveal: label sweeps up from a blurred, faded state on hover */
+.btn-label, .contact-action-label { display: inline-block; }
+.btn:hover .btn-label, .contact-action:hover .contact-action-label { animation: cta-text-reveal .5s cubic-bezier(.22,1,.36,1); }
+@keyframes cta-text-reveal { from { filter: blur(3px); opacity: .5; translate: 0 4px; } to { filter: blur(0); opacity: 1; translate: 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .contact-action { animation: none; }
+  .btn-ring::before, .contact-action-ring::before { animation-duration: 18s; }
+  .btn-bloom, .contact-action-bloom { animation: none; opacity: .3; }
+  .btn:hover .btn-label, .contact-action:hover .contact-action-label { animation: none; }
+}

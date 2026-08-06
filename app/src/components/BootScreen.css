@@ -1,0 +1,145 @@
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--carbon-0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+
+.boot-skip {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.boot-skip:hover {
+  color: #fff;
+  border-color: var(--border-glow);
+}
+
+.boot-scan {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.boot-scan-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.boot-ring {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1;
+  opacity: 0.4;
+}
+.boot-ring-outer {
+  stroke-dasharray: 4 8;
+  animation: bootSpin 12s linear infinite;
+  transform-origin: 100px 100px;
+}
+.boot-ring-mid {
+  stroke-dasharray: 2 5;
+  opacity: 0.55;
+  animation: bootSpinReverse 8s linear infinite;
+  transform-origin: 100px 100px;
+}
+.boot-ring-inner {
+  opacity: 0.7;
+}
+
+.boot-sweep {
+  stroke: var(--red-text);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px var(--red));
+  transform-origin: 100px 100px;
+  animation: bootSweep 1.8s linear infinite;
+}
+
+@keyframes bootSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes bootSpinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes bootSweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.boot-scan-glow {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--red-soft), transparent 70%);
+  animation: bootPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes bootPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.boot-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: min(90vw, 380px);
+}
+
+.boot-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  color: var(--text-faint);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease, color 0.35s ease;
+}
+.boot-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--text-dim);
+}
+.boot-line-status {
+  color: var(--red-text);
+  font-size: 0.7rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-ring-outer,
+  .boot-ring-mid,
+  .boot-sweep,
+  .boot-scan-glow {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,397 @@
+#garage.scene {
+  position: relative;
+}
+
+/* ---- animated blueprint grid backdrop ---- */
+.blueprint-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(79, 216, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 216, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(rgba(79, 216, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 216, 255, 0.04) 1px, transparent 1px);
+  background-size: 88px 88px, 88px 88px, 22px 22px, 22px 22px;
+  background-position: center;
+  animation: bpDrift 30s linear infinite;
+  mask-image: radial-gradient(ellipse 80% 70% at center, #000 40%, transparent 90%);
+}
+@keyframes bpDrift {
+  to {
+    background-position: 88px 88px, 88px 88px, 22px 22px, 22px 22px;
+  }
+}
+
+.garage-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* ---- left: real profile photo inside a holographic scanner HUD ----
+   the <img> is always the visual anchor at the center; every ring, glow,
+   scan line, particle and indicator below is a decorative layer stacked
+   on top of it via z-index, never a replacement for the photo. */
+.garage-avatar-stage {
+  position: relative;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+}
+
+.avatar-hud {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  transform: rotateX(calc(var(--parallax-y, 0) * -6deg)) rotateY(calc(var(--parallax-x, 0) * 8deg));
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* soft red/ice ambient bloom behind the whole rig */
+.avatar-glow {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  filter: blur(38px);
+  pointer-events: none;
+  z-index: 0;
+}
+.avatar-glow-red { background: radial-gradient(circle, rgba(216, 31, 55, 0.32), transparent 65%); animation: avatarGlowPulse 4.5s ease-in-out infinite; }
+.avatar-glow-ice { background: radial-gradient(circle, rgba(79, 216, 255, 0.22), transparent 70%); animation: avatarGlowPulse 5.5s ease-in-out infinite reverse; }
+@keyframes avatarGlowPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+/* the photo itself — always centered, always the largest, sharpest element */
+.avatar-photo-wrap {
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 3;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 25px 60px rgba(0, 0, 0, 0.55),
+    0 0 50px rgba(216, 31, 55, 0.25),
+    0 0 90px rgba(79, 216, 255, 0.12);
+  transform: translateZ(20px);
+}
+.avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: saturate(1.05) contrast(1.03);
+}
+.avatar-photo-vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, transparent 55%, rgba(5, 5, 6, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* scan line sweeping down across the photo, clipped to the circle */
+.avatar-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(79, 216, 255, 0.35) 45%, rgba(79, 216, 255, 0.6) 50%, rgba(79, 216, 255, 0.35) 55%, transparent);
+  animation: avatarScan 3.6s ease-in-out infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+@keyframes avatarScan {
+  0% { top: -40%; }
+  50% { top: 100%; }
+  50.01% { top: -40%; }
+  100% { top: -40%; }
+}
+
+/* rotating wireframe geometry ring around the photo — decorative frame only */
+.avatar-wireframe {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(79, 216, 255, 0.5) 0deg 1.2deg, transparent 1.2deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 62%, #000 63%, #000 66%, transparent 67%);
+  mask: radial-gradient(circle, transparent 62%, #000 63%, #000 66%, transparent 67%);
+  animation: avatarRingSpin 14s linear infinite;
+  opacity: 0.8;
+}
+
+/* rotating holographic rings */
+.avatar-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+.ring-outer {
+  inset: -18px;
+  border: 1px dashed rgba(216, 31, 55, 0.35);
+  animation: avatarRingSpin 24s linear infinite;
+}
+.ring-outer::before,
+.ring-outer::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red-text);
+  box-shadow: 0 0 8px var(--red-text);
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.ring-outer::after { top: auto; bottom: -3px; background: var(--ice); box-shadow: 0 0 8px var(--ice); }
+.ring-mid {
+  inset: 0;
+  border: 1px dashed rgba(79, 216, 255, 0.28);
+  animation: avatarRingSpin 18s linear infinite reverse;
+}
+@keyframes avatarRingSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* floating particles drifting around the frame, each on its own orbit radius/timing */
+.avatar-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(2px + (var(--p) % 3) * 1px);
+  height: calc(2px + (var(--p) % 3) * 1px);
+  border-radius: 50%;
+  background: var(--ice);
+  box-shadow: 0 0 6px var(--ice);
+  z-index: 4;
+  pointer-events: none;
+  animation: avatarParticleDrift calc(6s + var(--p) * 0.4s) ease-in-out infinite;
+  animation-delay: calc(var(--p) * -0.35s);
+  transform: rotate(var(--p-angle)) translateX(var(--p-radius));
+  opacity: 0;
+}
+.avatar-particle:nth-child(odd) { background: var(--red-text); box-shadow: 0 0 6px var(--red-text); }
+@keyframes avatarParticleDrift {
+  0%, 100% { opacity: 0; transform: rotate(var(--p-angle)) translateX(var(--p-radius)) translateY(0); }
+  15%, 85% { opacity: 0.8; }
+  50% { transform: rotate(calc(var(--p-angle) + 12deg)) translateX(calc(var(--p-radius) + 10px)) translateY(-14px); }
+}
+
+/* orbiting UI indicator badges — small HUD readouts anchored around the ring */
+.avatar-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transform: rotate(var(--ind-angle)) translateX(175px) rotate(calc(-1 * var(--ind-angle)));
+  animation: avatarIndicatorFloat 5s ease-in-out infinite;
+  animation-delay: calc(var(--ind-angle) * -0.02s);
+}
+.avatar-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ice);
+  box-shadow: 0 0 8px var(--ice);
+  flex-shrink: 0;
+  animation: avatarIndicatorBlink 2.2s ease-in-out infinite;
+}
+.avatar-indicator-text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  white-space: nowrap;
+  background: rgba(6, 7, 10, 0.6);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.25rem 0.45rem;
+}
+.avatar-indicator-text b {
+  color: var(--ice);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+}
+@keyframes avatarIndicatorFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+@keyframes avatarIndicatorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.avatar-stage-label {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-hud { transform: none; }
+  .avatar-glow-red, .avatar-glow-ice, .avatar-scanline, .avatar-wireframe,
+  .ring-outer, .ring-mid, .avatar-particle, .avatar-indicator, .avatar-indicator-dot {
+    animation: none;
+  }
+  .avatar-particle { opacity: 0.5; }
+}
+
+/* ---- right: card stack ---- */
+.garage-cards {
+  position: relative;
+}
+
+.garage-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  font-size: clamp(2rem, 3.6vw, 3.2rem);
+  margin-bottom: 1.8rem;
+}
+
+.card-stack {
+  position: relative;
+  height: 240px;
+  perspective: 1200px;
+}
+
+.profile-card {
+  position: absolute;
+  inset: 0;
+  padding: 1.8rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.profile-card.active {
+  opacity: 1;
+  transform: translateX(0) translateZ(0) rotateY(0deg) rotate(0deg);
+  z-index: 3;
+  pointer-events: auto;
+}
+.profile-card.next {
+  opacity: 0.35;
+  transform: translateX(24px) translateZ(-80px) rotateY(-8deg) rotate(1.5deg);
+  z-index: 2;
+  pointer-events: none;
+}
+.profile-card.prev {
+  opacity: 0.2;
+  transform: translateX(-16px) translateZ(-140px) rotateY(8deg) rotate(-1.5deg);
+  z-index: 1;
+  pointer-events: none;
+}
+.profile-card.hidden {
+  opacity: 0;
+  transform: translateX(0) translateZ(-200px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* hover creates depth: card lifts and tilts slightly toward the cursor side */
+.profile-card.active:hover {
+  transform: translateX(0) translateZ(20px) rotateX(2deg) scale(1.015);
+  box-shadow: 0 30px 80px rgba(216, 31, 55, 0.22), 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.profile-card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(216, 31, 55, 0.12);
+  color: var(--red-text);
+  font-size: 1.05rem;
+}
+
+.profile-card-label {
+  color: var(--red-text);
+  letter-spacing: 3px;
+}
+
+.profile-card-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+.profile-card-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.line-primary {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-body);
+}
+.line-secondary {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.card-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+}
+.card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border-soft);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-dot.active {
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+  transform: scale(1.3);
+}
+
+@media (max-width: 860px) {
+  .garage-grid {
+    grid-template-columns: 1fr;
+  }
+  .garage-avatar-stage {
+    height: 280px;
+  }
+  .avatar-hud {
+    width: 220px;
+    height: 220px;
+  }
+  .avatar-indicator {
+    transform: rotate(var(--ind-angle)) translateX(130px) rotate(calc(-1 * var(--ind-angle)));
+  }
+  .card-stack {
+    height: 260px;
+  }
+}

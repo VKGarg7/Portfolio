@@ -1,0 +1,37 @@
+.name-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 14vh;
+  pointer-events: none;
+}
+
+.name-reveal-inner {
+  text-align: center;
+}
+
+.name-reveal-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 6px;
+  color: var(--red-text);
+  margin-bottom: 0.6rem;
+}
+
+.name-reveal-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1;
+  text-shadow: 0 0 60px rgba(216, 31, 55, 0.5);
+}
+
+@media (max-width: 760px) {
+  .name-reveal {
+    padding-bottom: 10vh;
+  }
+}
